@@ -1,0 +1,338 @@
+:root {
+  --azul-marino: #1e293b;
+  --azul-claro: #f1f5f9;
+  --naranja-ferretero: #f97316;
+  --texto-oscuro: #0f172a;
+  --blanco: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f8fafc;
+  color: var(--texto-oscuro);
+  line-height: 1.6;
+}
+
+/* ENCABEZADO */
+header {
+  background-color: var(--azul-marino);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  border-bottom: 3px solid var(--naranja-ferretero);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: white;
+  border: 2px solid var(--naranja-ferretero);
+}
+
+.brand-text h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.brand-text h1 span {
+  color: var(--naranja-ferretero);
+}
+
+.brand-text p {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: var(--blanco);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--naranja-ferretero);
+}
+
+/* BANNER CON VIDEO IFRAME TOTALMENTE CENTRADO Y SIN BORDES */
+.hero-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background-color: #0f172a;
+  border-bottom: 3px solid var(--naranja-ferretero);
+}
+
+.hero-video-wrapper iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130vw;
+  height: 73.125vw; /* Mantiene proporción 16:9 en relación al ancho de pantalla */
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.hero-overlay-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 1.5rem;
+  color: var(--blanco);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.hero-overlay-content h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-overlay-content p {
+  font-size: 1rem;
+  max-width: 800px;
+}
+
+/* CONTENEDOR Y TARJETAS */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background-color: var(--blanco);
+  padding: 1.8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.card h2 {
+  color: var(--azul-marino);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--azul-claro);
+  padding-bottom: 0.5rem;
+}
+
+/* GRIDS */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.calc-card {
+  background-color: var(--azul-claro);
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 4px solid var(--naranja-ferretero);
+}
+
+.calc-card h3 {
+  color: var(--azul-marino);
+  margin-bottom: 0.5rem;
+}
+
+.calc-card p {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.info-box {
+  background-color: var(--azul-claro);
+  padding: 1.2rem;
+  border-radius: 8px;
+}
+
+.info-box h3 {
+  color: var(--azul-marino);
+  margin-bottom: 0.5rem;
+}
+
+.info-box p {
+  font-size: 0.92rem;
+}
+
+/* BOTONES NARANJA */
+.btn-primary {
+  display: inline-block;
+  background-color: var(--naranja-ferretero);
+  color: var(--blanco);
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #ea580c;
+}
+
+/* GALERÍA DE PRODUCTOS CON CARRUSEL */
+.product-card-gallery {
+  background: var(--blanco);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.carousel-slide {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 2;
+  transition: background-color 0.2s;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(249, 115, 22, 0.9);
+}
+
+.carousel-btn.prev {
+  left: 5px;
+}
+.carousel-btn.next {
+  right: 5px;
+}
+
+.product-info-box {
+  padding: 1rem;
+}
+
+.product-info-box h4 {
+  color: var(--azul-marino);
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.product-info-box p {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* PIE DE PÁGINA */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--azul-marino);
+  color: var(--blanco);
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+/* ESTILOS PARA FORMULARIOS Y CALCULADORAS */
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--azul-marino);
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--naranja-ferretero);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}

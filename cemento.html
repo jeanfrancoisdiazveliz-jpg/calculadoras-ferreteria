@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Hormigón y Dosificación | Ferretería Don Iván</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ENCABEZADO -->
+    <header>
+      <div class="header-container">
+        <div class="brand-box">
+          <img
+            src="IMAGENES/LOGO_FERRETERIA.png"
+            alt="Ferretería Don Iván Logo"
+            class="logo-img"
+            onerror="this.src = 'IMAGENES/LOGO_FERRETERIA.jpg'"
+          />
+          <div class="brand-text">
+            <h1>Ferretería <span>Don Iván</span></h1>
+            <p>Calculadoras técnicas y presupuestos para tu obra en Ecuador</p>
+          </div>
+        </div>
+        <nav>
+          <a href="index.html">Inicio</a>
+          <a href="cemento.html" style="color: var(--naranja-ferretero)"
+            >Losa / Hormigón</a
+          >
+          <a href="bloques.html">Paredes</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container">
+      <div class="card">
+        <h2>
+          Calculadora Técnica de Hormigón (Losas, Columnas, Vigas y Contrapisos)
+        </h2>
+        <p>
+          Selecciona el tipo de estructura que vas a fundir para obtener el
+          cálculo exacto de cemento, arena, ripio y agua según las normas de
+          construcción en Ecuador.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- FORMULARIO DE ENTRADA -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>1. Datos de la Estructura</h2>
+
+          <form
+            id="calc-cemento-form"
+            onsubmit="
+              event.preventDefault();
+              calcularHormigon();
+            "
+          >
+            <div class="form-group">
+              <label for="tipo-obra">Tipo de Estructura / Elemento:</label>
+              <select id="tipo-obra" onchange="cambiarTipoEstructura()">
+                <option value="losa">
+                  Losa / Techo / Plinta (f'c = 210 kg/cm²)
+                </option>
+                <option value="columnas">
+                  Columnas o Vigas (f'c = 210 kg/cm²)
+                </option>
+                <option value="contrapiso">
+                  Contrapiso / Vereda / Acera (f'c = 150 kg/cm²)
+                </option>
+              </select>
+            </div>
+
+            <!-- CAMPOS PARA LOSA O CONTRAPISO -->
+            <div id="campos-area">
+              <div class="form-group">
+                <label for="largo">Largo del área (metros):</label>
+                <input
+                  type="number"
+                  id="largo"
+                  step="0.01"
+                  min="0.1"
+                  placeholder="Ej: 10.00"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="ancho">Ancho del área (metros):</label>
+                <input
+                  type="number"
+                  id="ancho"
+                  step="0.01"
+                  min="0.1"
+                  placeholder="Ej: 6.00"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="espesor">Espesor / Altura (centímetros):</label>
+                <input
+                  type="number"
+                  id="espesor"
+                  step="0.5"
+                  min="1"
+                  placeholder="Ej: 12 cm para losa, 8 cm para contrapiso"
+                />
+              </div>
+            </div>
+
+            <!-- CAMPOS PARA COLUMNAS / VIGAS -->
+            <div id="campos-columnas" style="display: none">
+              <div class="form-group">
+                <label for="cant-columnas">Cantidad de Columnas / Vigas:</label>
+                <input
+                  type="number"
+                  id="cant-columnas"
+                  step="1"
+                  min="1"
+                  placeholder="Ej: 6"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="col-seccion-a">Lado A de la sección (cm):</label>
+                <input
+                  type="number"
+                  id="col-seccion-a"
+                  step="1"
+                  min="5"
+                  placeholder="Ej: 30 (0.30 m)"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="col-seccion-b">Lado B de la sección (cm):</label>
+                <input
+                  type="number"
+                  id="col-seccion-b"
+                  step="1"
+                  min="5"
+                  placeholder="Ej: 30 (0.30 m)"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="col-altura"
+                  >Altura o Largo de cada una (metros):</label
+                >
+                <input
+                  type="number"
+                  id="col-altura"
+                  step="0.01"
+                  min="0.1"
+                  placeholder="Ej: 2.60"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="desperdicio">Desperdicio estimado (%):</label>
+              <select id="desperdicio">
+                <option value="0.05" selected>5% (Estándar recomendado)</option>
+                <option value="0.08">
+                  8% (Suelo irregular / Encofrado de madera)
+                </option>
+                <option value="0.10">10% (Obra pesada / Mermas altas)</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              style="
+                width: 100%;
+                cursor: pointer;
+                border: none;
+                font-size: 1rem;
+              "
+            >
+              Calcular Materiales
+            </button>
+          </form>
+        </section>
+
+        <!-- RESULTADOS -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>2. Presupuesto de Materiales</h2>
+
+          <div
+            id="resultado-box"
+            class="info-box"
+            style="
+              background-color: var(--blanco);
+              border: 1px solid #cbd5e1;
+              text-align: center;
+              padding: 2rem 1rem;
+            "
+          >
+            <p style="color: #64748b">
+              Ingresa las medidas y haz clic en
+              <strong>"Calcular Materiales"</strong> para obtener la lista
+              detallada.
+            </p>
+          </div>
+
+          <div
+            id="btn-cotizar-container"
+            style="display: none; margin-top: 1.5rem"
+          >
+            <a
+              id="whatsapp-link"
+              href="#"
+              target="_blank"
+              class="btn-primary"
+              style="
+                background-color: #25d366;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                text-decoration: none;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+                />
+              </svg>
+              Pedir Cotación por WhatsApp
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- NOTA TÉCNICA -->
+      <div class="card" style="margin-top: 2rem">
+        <h3>Guía de Dosificación Recomendada en Ecuador</h3>
+        <ul
+          style="
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.6;
+          "
+        >
+          <li>
+            <strong>Estructural (210 kg/cm² - 3000 PSI):</strong> Losas, vigas,
+            columnas y plintas. Utiliza proporciones de 7.5 a 8 sacos de cemento
+            por m³ de hormigón preparado (Mezcla 1 : 2 : 3).
+          </li>
+          <li>
+            <strong>Contrapisos y Aceras (150 kg/cm² - 2000 PSI):</strong> Pisos
+            base, veredas o rellenos. Utiliza proporciones de 6 sacos por m³ de
+            hormigón (Mezcla 1 : 2.5 : 4).
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+      function cambiarTipoEstructura() {
+        const tipo = document.getElementById("tipo-obra").value;
+        const camposArea = document.getElementById("campos-area");
+        const camposColumnas = document.getElementById("campos-columnas");
+
+        if (tipo === "columnas") {
+          camposArea.style.display = "none";
+          camposColumnas.style.display = "block";
+        } else {
+          camposArea.style.display = "block";
+          camposColumnas.style.display = "none";
+        }
+      }
+
+      function calcularHormigon() {
+        const tipoObra = document.getElementById("tipo-obra").value;
+        const desperdicio = parseFloat(
+          document.getElementById("desperdicio").value,
+        );
+
+        let volumenNeto = 0;
+        let descripcionObra = "";
+
+        if (tipoObra === "columnas") {
+          const cant = parseFloat(
+            document.getElementById("cant-columnas").value,
+          );
+          const ladoA =
+            parseFloat(document.getElementById("col-seccion-a").value) / 100;
+          const ladoB =
+            parseFloat(document.getElementById("col-seccion-b").value) / 100;
+          const altura = parseFloat(
+            document.getElementById("col-altura").value,
+          );
+
+          if (isNaN(cant) || isNaN(ladoA) || isNaN(ladoB) || isNaN(altura)) {
+            alert("Por favor ingresa todos los datos de las columnas/vigas.");
+            return;
+          }
+
+          volumenNeto = cant * (ladoA * ladoB * altura);
+          descripcionObra = `${cant} columnas/vigas de ${ladoA * 100}x${ladoB * 100}cm (H: ${altura}m)`;
+        } else {
+          const largo = parseFloat(document.getElementById("largo").value);
+          const ancho = parseFloat(document.getElementById("ancho").value);
+          const espesorCm = parseFloat(
+            document.getElementById("espesor").value,
+          );
+
+          if (isNaN(largo) || isNaN(ancho) || isNaN(espesorCm)) {
+            alert("Por favor ingresa el largo, ancho y espesor.");
+            return;
+          }
+
+          const espesorM = espesorCm / 100;
+          volumenNeto = largo * ancho * espesorM;
+          descripcionObra = `Área de ${largo}m x ${ancho}m (Espesor: ${espesorCm}cm)`;
+        }
+
+        const volumenTotal = volumenNeto * (1 + desperdicio);
+
+        // Factores según el tipo de obra (Sacos por m3)
+        let sacosPorM3 = 7.5; // Estándar 210 kg/cm2
+        let f210 = "210 kg/cm²";
+
+        if (tipoObra === "contrapiso") {
+          sacosPorM3 = 6.0; // 150 kg/cm2
+          f210 = "150 kg/cm²";
+        }
+
+        const sacosCemento = Math.ceil(volumenTotal * sacosPorM3);
+        const m3Arena = (volumenTotal * 0.55).toFixed(2);
+        const m3Ripio = (volumenTotal * 0.82).toFixed(2);
+        const litrosAgua = Math.round(volumenTotal * 185);
+
+        // Renderizar resultado
+        const resultadoBox = document.getElementById("resultado-box");
+        resultadoBox.style.backgroundColor = "var(--azul-claro)";
+        resultadoBox.style.textAlign = "left";
+
+        resultadoBox.innerHTML = `
+        <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Detalle: <strong>${descripcionObra}</strong></p>
+          <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+            Volumen de Hormigón: <span style="color: var(--naranja-ferretero);">${volumenTotal.toFixed(2)} m³</span>
+            <span style="font-size: 0.8rem; color: #64748b; font-weight: normal;">(incluye ${desperdicio * 100}% desp. - Resistencia ${f210})</span>
+          </p>
+        </div>
+
+        <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Cemento Selva Alegre / Holcim (50 kg):</strong></span>
+            <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${sacosCemento} sacos</strong>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Arena para Hormigón:</strong></span>
+            <strong>${m3Arena} m³</strong>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Ripio Triturado:</strong></span>
+            <strong>${m3Ripio} m³</strong>
+          </li>
+          <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+            <span><strong>Agua aprox.:</strong></span>
+            <strong>${litrosAgua} Litros</strong>
+          </li>
+        </ul>
+      `;
+
+        // Configurar WhatsApp
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar materiales para mi obra:\n\n- Tipo: ${tipoObra.toUpperCase()}\n- Detalle: ${descripcionObra}\n- Volumen total: ${volumenTotal.toFixed(2)} m³\n- Cemento: ${sacosCemento} sacos (50kg)\n- Arena: ${m3Arena} m³\n- Ripio: ${m3Ripio} m³`;
+        const urlWA = `https://wa.me/593987654321?text=${encodeURIComponent(mensajeWA)}`;
+
+        document.getElementById("whatsapp-link").href = urlWA;
+        document.getElementById("btn-cotizar-container").style.display =
+          "block";
+      }
+    </script>
+  </body>
+</html>

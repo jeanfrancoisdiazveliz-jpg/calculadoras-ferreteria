@@ -1,0 +1,12 @@
+# Variables de entorno y llaves secretas
+.env
+.env.local
+.env.production
+
+# Archivos del sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Carpetas de dependencias (por si luego usas Node/npm)
+node_modules/
