@@ -35,17 +35,17 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="container">
+      <!-- SECCIÓN TITULO PRINCIPAL -->
       <div class="card">
-        <h2>
-          Calculadora Técnica de Hormigón (Losas, Columnas, Vigas y Contrapisos)
-        </h2>
+        <h2>Calculadora Técnica de Hormigón y Dosificación de Cemento</h2>
         <p>
-          Selecciona el tipo de estructura que vas a fundir para obtener el
-          cálculo exacto de cemento, arena, ripio y agua según las normas de
-          construcción en Ecuador.
+          Calcula el volumen exacto de mezcla y la cantidad requerida de sacos
+          de cemento (50 kg), arena para hormigón, ripio triturado y agua para
+          losas, columnas, vigas, plintas y contrapisos.
         </p>
       </div>
 
+      <!-- CALCULADORA (EN LA PARTE SUPERIOR) -->
       <div class="grid-2">
         <!-- FORMULARIO DE ENTRADA -->
         <section class="card" style="margin-bottom: 0">
@@ -62,13 +62,13 @@
               <label for="tipo-obra">Tipo de Estructura / Elemento:</label>
               <select id="tipo-obra" onchange="cambiarTipoEstructura()">
                 <option value="losa">
-                  Losa / Techo / Plinta (f'c = 210 kg/cm²)
+                  Losa / Techo / Plinta / Cimentación (f'c = 210 kg/cm²)
                 </option>
                 <option value="columnas">
-                  Columnas o Vigas (f'c = 210 kg/cm²)
+                  Columnas o Vigas Estructurales (f'c = 210 kg/cm²)
                 </option>
                 <option value="contrapiso">
-                  Contrapiso / Vereda / Acera (f'c = 150 kg/cm²)
+                  Contrapiso / Acera / Peatonal (f'c = 150 kg/cm²)
                 </option>
               </select>
             </div>
@@ -129,7 +129,7 @@
                   id="col-seccion-a"
                   step="1"
                   min="5"
-                  placeholder="Ej: 30 (0.30 m)"
+                  placeholder="Ej: 30 cm (0.30 m)"
                 />
               </div>
 
@@ -140,7 +140,7 @@
                   id="col-seccion-b"
                   step="1"
                   min="5"
-                  placeholder="Ej: 30 (0.30 m)"
+                  placeholder="Ej: 30 cm (0.30 m)"
                 />
               </div>
 
@@ -153,7 +153,7 @@
                   id="col-altura"
                   step="0.01"
                   min="0.1"
-                  placeholder="Ej: 2.60"
+                  placeholder="Ej: 2.60 m"
                 />
               </div>
             </div>
@@ -184,7 +184,7 @@
           </form>
         </section>
 
-        <!-- RESULTADOS -->
+        <!-- TARJETA DE RESULTADOS -->
         <section class="card" style="margin-bottom: 0">
           <h2>2. Presupuesto de Materiales</h2>
 
@@ -239,35 +239,129 @@
         </section>
       </div>
 
-      <!-- NOTA TÉCNICA -->
-      <div class="card" style="margin-top: 2rem">
-        <h3>Guía de Dosificación Recomendada en Ecuador</h3>
-        <ul
-          style="
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: #475569;
-            line-height: 1.6;
-          "
-        >
-          <li>
-            <strong>Estructural (210 kg/cm² - 3000 PSI):</strong> Losas, vigas,
-            columnas y plintas. Utiliza proporciones de 7.5 a 8 sacos de cemento
-            por m³ de hormigón preparado (Mezcla 1 : 2 : 3).
-          </li>
-          <li>
-            <strong>Contrapisos y Aceras (150 kg/cm² - 2000 PSI):</strong> Pisos
-            base, veredas o rellenos. Utiliza proporciones de 6 sacos por m³ de
-            hormigón (Mezcla 1 : 2.5 : 4).
-          </li>
-        </ul>
-      </div>
+      <!-- SECCIÓN DE TEORÍA Y GUÍA TÉCNICA (EN LA PARTE INFERIOR) -->
+      <section style="margin-top: 2.5rem">
+        <div class="card">
+          <h2>Guía Técnica de Dosificación de Hormigón en Ecuador</h2>
+          <p>
+            Aprende cómo seleccionar la mezcla correcta, entender las
+            proporciones por parihuela o balde y asegurar una fundición
+            resistente para tu obra.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <!-- TARJETA 1: TABLA DE DOSIFICACIÓN -->
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              1. Tabla de Dosificaciones Frecuentes
+            </h3>
+            <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1rem">
+              En la construcción en Ecuador, la proporción de mezcla se mide en
+              volumen usando parihuelas o cajones de madera estándar de 1 pie
+              cúbico (30 x 30 x 30 cm) por cada saco de cemento de 50 kg:
+            </p>
+
+            <table
+              style="
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.88rem;
+                text-align: left;
+              "
+            >
+              <thead>
+                <tr style="background-color: var(--azul-marino); color: white">
+                  <th style="padding: 0.6rem; border-radius: 4px 0 0 0">Uso</th>
+                  <th style="padding: 0.6rem">Resistencia (f'c)</th>
+                  <th style="padding: 0.6rem">Proporción</th>
+                  <th style="padding: 0.6rem; border-radius: 0 4px 0 0">
+                    Sacos / m³
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Losas, Columnas, Vigas</strong>
+                  </td>
+                  <td style="padding: 0.6rem">210 kg/cm² (3000 PSI)</td>
+                  <td style="padding: 0.6rem">1 : 2 : 3</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    7.5 a 8.0
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Plintas y Cimentaciones</strong>
+                  </td>
+                  <td style="padding: 0.6rem">180 kg/cm² (2500 PSI)</td>
+                  <td style="padding: 0.6rem">1 : 2.5 : 3.5</td>
+                  <td style="padding: 0.6rem; font-weight: bold">6.5 a 7.0</td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.6rem">
+                    <strong>Contrapisos y Aceras</strong>
+                  </td>
+                  <td style="padding: 0.6rem">150 kg/cm² (2000 PSI)</td>
+                  <td style="padding: 0.6rem">1 : 2.5 : 4</td>
+                  <td style="padding: 0.6rem; font-weight: bold">5.5 a 6.0</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+
+          <!-- TARJETA 2: RECOMENDACIONES DE MEZCLADO -->
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              2. Buenas Prácticas de Fundición y Curado
+            </h3>
+            <ul
+              style="
+                padding-left: 1.2rem;
+                font-size: 0.9rem;
+                color: #475569;
+                line-height: 1.6;
+              "
+            >
+              <li style="margin-bottom: 0.5rem">
+                <strong>Relación Agua/Cemento:</strong> Evita el exceso de agua.
+                Una mezcla muy fluida facilita el trabajo pero reduce
+                dramáticamente la resistencia final del hormigón.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Humedecer el Encofrado:</strong> Moja abundantemente las
+                maderas o tablas antes de verter la mezcla para que no absorban
+                el agua del hormigón.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Vibrado del Hormigón:</strong> Chuzar o vibrar la mezcla
+                durante el llenado para eliminar burbujas de aire y evitar las
+                "cangrejeras" en columnas y vigas.
+              </li>
+              <li>
+                <strong>Curado Esencial (7 Días):</strong> riega con abundante
+                agua la losa o columna durante los primeros 7 días posteriores
+                al vaciado. El secado rápido causa fisuras y grietas
+                estructurales.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
     </main>
 
     <footer>
       <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
     </footer>
 
+    <!-- LÓGICA JAVASCRIPT DE LA CALCULADORA -->
     <script>
       function cambiarTipoEstructura() {
         const tipo = document.getElementById("tipo-obra").value;
@@ -310,7 +404,7 @@
           }
 
           volumenNeto = cant * (ladoA * ladoB * altura);
-          descripcionObra = `${cant} columnas/vigas de ${ladoA * 100}x${ladoB * 100}cm (H: ${altura}m)`;
+          descripcionObra = `${cant} columnas/vigas de ${ladoA * 100}x${ladoB * 100} cm (H: ${altura} m)`;
         } else {
           const largo = parseFloat(document.getElementById("largo").value);
           const ancho = parseFloat(document.getElementById("ancho").value);
@@ -325,17 +419,17 @@
 
           const espesorM = espesorCm / 100;
           volumenNeto = largo * ancho * espesorM;
-          descripcionObra = `Área de ${largo}m x ${ancho}m (Espesor: ${espesorCm}cm)`;
+          descripcionObra = `Área de ${largo} m x ${ancho} m (Espesor: ${espesorCm} cm)`;
         }
 
         const volumenTotal = volumenNeto * (1 + desperdicio);
 
         // Factores según el tipo de obra (Sacos por m3)
-        let sacosPorM3 = 7.5; // Estándar 210 kg/cm2
+        let sacosPorM3 = 7.5;
         let f210 = "210 kg/cm²";
 
         if (tipoObra === "contrapiso") {
-          sacosPorM3 = 6.0; // 150 kg/cm2
+          sacosPorM3 = 6.0;
           f210 = "150 kg/cm²";
         }
 
