@@ -19,15 +19,20 @@
           />
           <div class="brand-text">
             <h1>Ferretería <span>Don Iván</span></h1>
-            <p>Calculadoras técnicas y presupuestos para tu obra en Ecuador</p>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
           </div>
         </div>
         <nav>
           <a href="index.html">Inicio</a>
-          <a href="cemento.html" style="color: var(--naranja-ferretero)"
-            >Losa / Hormigón</a
-          >
+          <a href="cemento.html" class="active">Losa / Hormigón</a>
           <a href="bloques.html">Paredes</a>
+          <a href="hierro.html">Hierro</a>
+          <a href="pinturas.html">Pinturas</a>
+          <a href="ceramica.html">Cerámica</a>
+          <a href="acabados.html">Acabados</a>
           <a href="contacto.html">Contacto</a>
         </nav>
       </div>
@@ -35,19 +40,16 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="container">
-      <!-- SECCIÓN TITULO PRINCIPAL -->
       <div class="card">
         <h2>Calculadora Técnica de Hormigón y Dosificación de Cemento</h2>
         <p>
           Calcula el volumen exacto de mezcla y la cantidad requerida de sacos
-          de cemento (50 kg), arena para hormigón, ripio triturado y agua para
-          losas, columnas, vigas, plintas y contrapisos.
+          de cemento, arena, ripio triturado y agua para losas, columnas, vigas
+          y contrapisos en sistema Métrico e Imperial.
         </p>
       </div>
 
-      <!-- CALCULADORA (EN LA PARTE SUPERIOR) -->
       <div class="grid-2">
-        <!-- FORMULARIO DE ENTRADA -->
         <section class="card" style="margin-bottom: 0">
           <h2>1. Datos de la Estructura</h2>
 
@@ -58,17 +60,53 @@
               calcularHormigon();
             "
           >
+            <!-- SELECTOR DE UNIDADES E INTERNACIONAL -->
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades / Región:</strong></label
+              >
+              <select id="sistema-unidades" onchange="cambiarSistemaUnidades()">
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, cm, m³)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, Pulgadas, Yardas³)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="peso-saco">Presentación del Saco de Cemento:</label>
+              <select id="peso-saco">
+                <option value="50" selected>
+                  Saco de 50 kg (Ecuador, LATAM, España)
+                </option>
+                <option value="42.5">
+                  Saco de 42.5 kg / 94 lb (EE.UU., México, Norma ACI)
+                </option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="tipo-obra">Tipo de Estructura / Elemento:</label>
               <select id="tipo-obra" onchange="cambiarTipoEstructura()">
                 <option value="losa">
-                  Losa / Techo / Plinta / Cimentación (f'c = 210 kg/cm²)
+                  Losa / Techo / Plinta / Cimentación (f'c = 210 kg/cm² / 3000
+                  PSI)
                 </option>
                 <option value="columnas">
-                  Columnas o Vigas Estructurales (f'c = 210 kg/cm²)
+                  Columnas o Vigas Estructurales (f'c = 210 kg/cm² / 3000 PSI)
                 </option>
                 <option value="contrapiso">
-                  Contrapiso / Acera / Peatonal (f'c = 150 kg/cm²)
+                  Contrapiso / Acera / Peatonal (f'c = 150 kg/cm² / 2000 PSI)
                 </option>
               </select>
             </div>
@@ -76,7 +114,9 @@
             <!-- CAMPOS PARA LOSA O CONTRAPISO -->
             <div id="campos-area">
               <div class="form-group">
-                <label for="largo">Largo del área (metros):</label>
+                <label for="largo" id="label-largo"
+                  >Largo del área (metros):</label
+                >
                 <input
                   type="number"
                   id="largo"
@@ -87,7 +127,9 @@
               </div>
 
               <div class="form-group">
-                <label for="ancho">Ancho del área (metros):</label>
+                <label for="ancho" id="label-ancho"
+                  >Ancho del área (metros):</label
+                >
                 <input
                   type="number"
                   id="ancho"
@@ -98,13 +140,15 @@
               </div>
 
               <div class="form-group">
-                <label for="espesor">Espesor / Altura (centímetros):</label>
+                <label for="espesor" id="label-espesor"
+                  >Espesor / Altura (centímetros):</label
+                >
                 <input
                   type="number"
                   id="espesor"
                   step="0.5"
-                  min="1"
-                  placeholder="Ej: 12 cm para losa, 8 cm para contrapiso"
+                  min="0.1"
+                  placeholder="Ej: 12 cm"
                 />
               </div>
             </div>
@@ -123,29 +167,33 @@
               </div>
 
               <div class="form-group">
-                <label for="col-seccion-a">Lado A de la sección (cm):</label>
+                <label for="col-seccion-a" id="label-col-a"
+                  >Lado A de la sección (cm):</label
+                >
                 <input
                   type="number"
                   id="col-seccion-a"
-                  step="1"
-                  min="5"
-                  placeholder="Ej: 30 cm (0.30 m)"
+                  step="0.1"
+                  min="1"
+                  placeholder="Ej: 30"
                 />
               </div>
 
               <div class="form-group">
-                <label for="col-seccion-b">Lado B de la sección (cm):</label>
+                <label for="col-seccion-b" id="label-col-b"
+                  >Lado B de la sección (cm):</label
+                >
                 <input
                   type="number"
                   id="col-seccion-b"
-                  step="1"
-                  min="5"
-                  placeholder="Ej: 30 cm (0.30 m)"
+                  step="0.1"
+                  min="1"
+                  placeholder="Ej: 30"
                 />
               </div>
 
               <div class="form-group">
-                <label for="col-altura"
+                <label for="col-altura" id="label-col-h"
                   >Altura o Largo de cada una (metros):</label
                 >
                 <input
@@ -153,7 +201,7 @@
                   id="col-altura"
                   step="0.01"
                   min="0.1"
-                  placeholder="Ej: 2.60 m"
+                  placeholder="Ej: 2.60"
                 />
               </div>
             </div>
@@ -239,29 +287,21 @@
         </section>
       </div>
 
-      <!-- SECCIÓN DE TEORÍA Y GUÍA TÉCNICA (EN LA PARTE INFERIOR) -->
+      <!-- GUÍA TÉCNICA -->
       <section style="margin-top: 2.5rem">
         <div class="card">
-          <h2>Guía Técnica de Dosificación de Hormigón en Ecuador</h2>
+          <h2>Guía Técnica de Dosificación de Hormigón (Normas ACI e INEN)</h2>
           <p>
-            Aprende cómo seleccionar la mezcla correcta, entender las
-            proporciones por parihuela o balde y asegurar una fundición
-            resistente para tu obra.
+            Aprende a seleccionar la dosificación recomendada según el uso
+            estructural y las normas internacionales.
           </p>
         </div>
 
         <div class="grid-2">
-          <!-- TARJETA 1: TABLA DE DOSIFICACIÓN -->
           <article class="card">
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
-              1. Tabla de Dosificaciones Frecuentes
+              1. Tabla de Dosificaciones Estándar
             </h3>
-            <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1rem">
-              En la construcción en Ecuador, la proporción de mezcla se mide en
-              volumen usando parihuelas o cajones de madera estándar de 1 pie
-              cúbico (30 x 30 x 30 cm) por cada saco de cemento de 50 kg:
-            </p>
-
             <table
               style="
                 width: 100%;
@@ -272,12 +312,10 @@
             >
               <thead>
                 <tr style="background-color: var(--azul-marino); color: white">
-                  <th style="padding: 0.6rem; border-radius: 4px 0 0 0">Uso</th>
+                  <th style="padding: 0.6rem">Uso</th>
                   <th style="padding: 0.6rem">Resistencia (f'c)</th>
                   <th style="padding: 0.6rem">Proporción</th>
-                  <th style="padding: 0.6rem; border-radius: 0 4px 0 0">
-                    Sacos / m³
-                  </th>
+                  <th style="padding: 0.6rem">Sacos (50kg) / m³</th>
                 </tr>
               </thead>
               <tbody>
@@ -294,7 +332,7 @@
                       font-weight: bold;
                     "
                   >
-                    7.5 a 8.0
+                    7.5 - 8.0
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
@@ -303,7 +341,7 @@
                   </td>
                   <td style="padding: 0.6rem">180 kg/cm² (2500 PSI)</td>
                   <td style="padding: 0.6rem">1 : 2.5 : 3.5</td>
-                  <td style="padding: 0.6rem; font-weight: bold">6.5 a 7.0</td>
+                  <td style="padding: 0.6rem; font-weight: bold">6.5 - 7.0</td>
                 </tr>
                 <tr>
                   <td style="padding: 0.6rem">
@@ -311,16 +349,15 @@
                   </td>
                   <td style="padding: 0.6rem">150 kg/cm² (2000 PSI)</td>
                   <td style="padding: 0.6rem">1 : 2.5 : 4</td>
-                  <td style="padding: 0.6rem; font-weight: bold">5.5 a 6.0</td>
+                  <td style="padding: 0.6rem; font-weight: bold">5.5 - 6.0</td>
                 </tr>
               </tbody>
             </table>
           </article>
 
-          <!-- TARJETA 2: RECOMENDACIONES DE MEZCLADO -->
           <article class="card">
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
-              2. Buenas Prácticas de Fundición y Curado
+              2. Buenas Prácticas de Mezclado y Curado
             </h3>
             <ul
               style="
@@ -331,25 +368,18 @@
               "
             >
               <li style="margin-bottom: 0.5rem">
-                <strong>Relación Agua/Cemento:</strong> Evita el exceso de agua.
-                Una mezcla muy fluida facilita el trabajo pero reduce
-                dramáticamente la resistencia final del hormigón.
+                <strong>Relación Agua/Cemento:</strong> La norma recomienda no
+                superar 0.55 litros de agua por cada kg de cemento para mantener
+                la resistencia requerida.
               </li>
               <li style="margin-bottom: 0.5rem">
-                <strong>Humedecer el Encofrado:</strong> Moja abundantemente las
-                maderas o tablas antes de verter la mezcla para que no absorban
-                el agua del hormigón.
-              </li>
-              <li style="margin-bottom: 0.5rem">
-                <strong>Vibrado del Hormigón:</strong> Chuzar o vibrar la mezcla
-                durante el llenado para eliminar burbujas de aire y evitar las
-                "cangrejeras" en columnas y vigas.
+                <strong>Conversión Imperial:</strong> 1 yarda cúbica ($yd^3$)
+                equivale a $0.764\text{ m}^3$ o $27\text{ ft}^3$.
               </li>
               <li>
-                <strong>Curado Esencial (7 Días):</strong> riega con abundante
-                agua la losa o columna durante los primeros 7 días posteriores
-                al vaciado. El secado rápido causa fisuras y grietas
-                estructurales.
+                <strong>Curado Obligatorio:</strong> Mantener húmedo el elemento
+                durante al menos 7 días para completar el proceso de hidratación
+                química del cemento.
               </li>
             </ul>
           </article>
@@ -361,8 +391,38 @@
       <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- LÓGICA JAVASCRIPT DE LA CALCULADORA -->
     <script>
+      function cambiarSistemaUnidades() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-largo").innerText =
+            "Largo del área (Pies / Feet):";
+          document.getElementById("label-ancho").innerText =
+            "Ancho del área (Pies / Feet):";
+          document.getElementById("label-espesor").innerText =
+            "Espesor / Altura (Pulgadas / Inches):";
+          document.getElementById("label-col-a").innerText =
+            "Lado A de la sección (Pulgadas / Inches):";
+          document.getElementById("label-col-b").innerText =
+            "Lado B de la sección (Pulgadas / Inches):";
+          document.getElementById("label-col-h").innerText =
+            "Altura o Largo (Pies / Feet):";
+        } else {
+          document.getElementById("label-largo").innerText =
+            "Largo del área (metros):";
+          document.getElementById("label-ancho").innerText =
+            "Ancho del área (metros):";
+          document.getElementById("label-espesor").innerText =
+            "Espesor / Altura (centímetros):";
+          document.getElementById("label-col-a").innerText =
+            "Lado A de la sección (cm):";
+          document.getElementById("label-col-b").innerText =
+            "Lado B de la sección (cm):";
+          document.getElementById("label-col-h").innerText =
+            "Altura o Largo de cada una (metros):";
+        }
+      }
+
       function cambiarTipoEstructura() {
         const tipo = document.getElementById("tipo-obra").value;
         const camposArea = document.getElementById("campos-area");
@@ -378,67 +438,121 @@
       }
 
       function calcularHormigon() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        const pesoSacoConfig = parseFloat(
+          document.getElementById("peso-saco").value,
+        );
         const tipoObra = document.getElementById("tipo-obra").value;
         const desperdicio = parseFloat(
           document.getElementById("desperdicio").value,
         );
 
-        let volumenNeto = 0;
+        let volumenM3 = 0;
         let descripcionObra = "";
 
-        if (tipoObra === "columnas") {
-          const cant = parseFloat(
-            document.getElementById("cant-columnas").value,
-          );
-          const ladoA =
-            parseFloat(document.getElementById("col-seccion-a").value) / 100;
-          const ladoB =
-            parseFloat(document.getElementById("col-seccion-b").value) / 100;
-          const altura = parseFloat(
-            document.getElementById("col-altura").value,
-          );
+        if (sistema === "imperial") {
+          if (tipoObra === "columnas") {
+            const cant = parseFloat(
+              document.getElementById("cant-columnas").value,
+            );
+            const ladoAPulg = parseFloat(
+              document.getElementById("col-seccion-a").value,
+            );
+            const ladoBPulg = parseFloat(
+              document.getElementById("col-seccion-b").value,
+            );
+            const altPies = parseFloat(
+              document.getElementById("col-altura").value,
+            );
 
-          if (isNaN(cant) || isNaN(ladoA) || isNaN(ladoB) || isNaN(altura)) {
-            alert("Por favor ingresa todos los datos de las columnas/vigas.");
-            return;
+            if (
+              isNaN(cant) ||
+              isNaN(ladoAPulg) ||
+              isNaN(ladoBPulg) ||
+              isNaN(altPies)
+            ) {
+              alert("Por favor ingresa todos los datos en pies y pulgadas.");
+              return;
+            }
+
+            const areaFt2 = (ladoAPulg / 12) * (ladoBPulg / 12);
+            const volFt3 = cant * areaFt2 * altPies;
+            volumenM3 = volFt3 * 0.0283168;
+            descripcionObra = `${cant} columnas/vigas de ${ladoAPulg}"x${ladoBPulg}" (H: ${altPies} ft)`;
+          } else {
+            const largoFt = parseFloat(document.getElementById("largo").value);
+            const anchoFt = parseFloat(document.getElementById("ancho").value);
+            const espesorPulg = parseFloat(
+              document.getElementById("espesor").value,
+            );
+
+            if (isNaN(largoFt) || isNaN(anchoFt) || isNaN(espesorPulg)) {
+              alert("Por favor ingresa el largo, ancho y espesor.");
+              return;
+            }
+
+            const volFt3 = largoFt * anchoFt * (espesorPulg / 12);
+            volumenM3 = volFt3 * 0.0283168;
+            descripcionObra = `Área de ${largoFt} ft x ${anchoFt} ft (Espesor: ${espesorPulg}")`;
           }
-
-          volumenNeto = cant * (ladoA * ladoB * altura);
-          descripcionObra = `${cant} columnas/vigas de ${ladoA * 100}x${ladoB * 100} cm (H: ${altura} m)`;
         } else {
-          const largo = parseFloat(document.getElementById("largo").value);
-          const ancho = parseFloat(document.getElementById("ancho").value);
-          const espesorCm = parseFloat(
-            document.getElementById("espesor").value,
-          );
+          // Sistema Métrico
+          if (tipoObra === "columnas") {
+            const cant = parseFloat(
+              document.getElementById("cant-columnas").value,
+            );
+            const ladoA =
+              parseFloat(document.getElementById("col-seccion-a").value) / 100;
+            const ladoB =
+              parseFloat(document.getElementById("col-seccion-b").value) / 100;
+            const altura = parseFloat(
+              document.getElementById("col-altura").value,
+            );
 
-          if (isNaN(largo) || isNaN(ancho) || isNaN(espesorCm)) {
-            alert("Por favor ingresa el largo, ancho y espesor.");
-            return;
+            if (isNaN(cant) || isNaN(ladoA) || isNaN(ladoB) || isNaN(altura)) {
+              alert("Por favor ingresa todos los datos.");
+              return;
+            }
+
+            volumenM3 = cant * (ladoA * ladoB * altura);
+            descripcionObra = `${cant} columnas/vigas de ${ladoA * 100}x${ladoB * 100} cm (H: ${altura} m)`;
+          } else {
+            const largo = parseFloat(document.getElementById("largo").value);
+            const ancho = parseFloat(document.getElementById("ancho").value);
+            const espesorCm = parseFloat(
+              document.getElementById("espesor").value,
+            );
+
+            if (isNaN(largo) || isNaN(ancho) || isNaN(espesorCm)) {
+              alert("Por favor ingresa el largo, ancho y espesor.");
+              return;
+            }
+
+            volumenM3 = largo * ancho * (espesorCm / 100);
+            descripcionObra = `Área de ${largo} m x ${ancho} m (Espesor: ${espesorCm} cm)`;
           }
-
-          const espesorM = espesorCm / 100;
-          volumenNeto = largo * ancho * espesorM;
-          descripcionObra = `Área de ${largo} m x ${ancho} m (Espesor: ${espesorCm} cm)`;
         }
 
-        const volumenTotal = volumenNeto * (1 + desperdicio);
+        const volumenTotalM3 = volumenM3 * (1 + desperdicio);
+        const volumenYARDAS = (volumenTotalM3 * 1.30795).toFixed(2);
+        const volumenPIES3 = (volumenTotalM3 * 35.3147).toFixed(1);
 
-        // Factores según el tipo de obra (Sacos por m3)
-        let sacosPorM3 = 7.5;
-        let f210 = "210 kg/cm²";
+        // Sacos por m3 base para 50kg
+        let sacosPorM3_50kg = 7.5;
+        let f210 = "210 kg/cm² (3000 PSI)";
 
         if (tipoObra === "contrapiso") {
-          sacosPorM3 = 6.0;
-          f210 = "150 kg/cm²";
+          sacosPorM3_50kg = 6.0;
+          f210 = "150 kg/cm² (2000 PSI)";
         }
 
-        const sacosCemento = Math.ceil(volumenTotal * sacosPorM3);
-        const m3Arena = (volumenTotal * 0.55).toFixed(2);
-        const m3Ripio = (volumenTotal * 0.82).toFixed(2);
-        const litrosAgua = Math.round(volumenTotal * 185);
+        const kilosCementoTotales = volumenTotalM3 * sacosPorM3_50kg * 50;
+        const sacosCemento = Math.ceil(kilosCementoTotales / pesoSacoConfig);
 
-        // Renderizar resultado
+        const m3Arena = (volumenTotalM3 * 0.55).toFixed(2);
+        const m3Ripio = (volumenTotalM3 * 0.82).toFixed(2);
+        const litrosAgua = Math.round(volumenTotalM3 * 185);
+
         const resultadoBox = document.getElementById("resultado-box");
         resultadoBox.style.backgroundColor = "var(--azul-claro)";
         resultadoBox.style.textAlign = "left";
@@ -447,34 +561,33 @@
         <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
           <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Detalle: <strong>${descripcionObra}</strong></p>
           <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
-            Volumen de Hormigón: <span style="color: var(--naranja-ferretero);">${volumenTotal.toFixed(2)} m³</span>
-            <span style="font-size: 0.8rem; color: #64748b; font-weight: normal;">(incluye ${desperdicio * 100}% desp. - Resistencia ${f210})</span>
+            Volumen Total: <span style="color: var(--naranja-ferretero);">${volumenTotalM3.toFixed(2)} m³</span> / <span>${volumenYARDAS} yd³</span>
+            <span style="font-size: 0.8rem; color: #64748b; font-weight: normal;">(${volumenPIES3} ft³ con ${desperdicio * 100}% desp. - Resistencia ${f210})</span>
           </p>
         </div>
 
         <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
         <ul style="list-style: none; padding: 0;">
           <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
-            <span><strong>Cemento Selva Alegre / Holcim (50 kg):</strong></span>
+            <span><strong>Cemento (Sacos de ${pesoSacoConfig} kg / ${Math.round(pesoSacoConfig * 2.20462)} lb):</strong></span>
             <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${sacosCemento} sacos</strong>
           </li>
           <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
             <span><strong>Arena para Hormigón:</strong></span>
-            <strong>${m3Arena} m³</strong>
+            <strong>${m3Arena} m³ / ${(m3Arena * 1.308).toFixed(2)} yd³</strong>
           </li>
           <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
-            <span><strong>Ripio Triturado:</strong></span>
-            <strong>${m3Ripio} m³</strong>
+            <span><strong>Ripio / Grava Triturada:</strong></span>
+            <strong>${m3Ripio} m³ / ${(m3Ripio * 1.308).toFixed(2)} yd³</strong>
           </li>
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
             <span><strong>Agua aprox.:</strong></span>
-            <strong>${litrosAgua} Litros</strong>
+            <strong>${litrosAgua} Litros / ${(litrosAgua * 0.264172).toFixed(1)} Galones</strong>
           </li>
         </ul>
       `;
 
-        // Configurar WhatsApp
-        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar materiales para mi obra:\n\n- Tipo: ${tipoObra.toUpperCase()}\n- Detalle: ${descripcionObra}\n- Volumen total: ${volumenTotal.toFixed(2)} m³\n- Cemento: ${sacosCemento} sacos (50kg)\n- Arena: ${m3Arena} m³\n- Ripio: ${m3Ripio} m³`;
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar materiales para mi obra:\n\n- Tipo: ${tipoObra.toUpperCase()}\n- Detalle: ${descripcionObra}\n- Volumen: ${volumenTotalM3.toFixed(2)} m³ (${volumenYARDAS} yd³)\n- Cemento: ${sacosCemento} sacos (${pesoSacoConfig}kg)\n- Arena: ${m3Arena} m³\n- Ripio: ${m3Ripio} m³`;
         const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
 
         document.getElementById("whatsapp-link").href = urlWA;

@@ -19,38 +19,37 @@
           />
           <div class="brand-text">
             <h1>Ferretería <span>Don Iván</span></h1>
-            <p>Calculadoras técnicas y presupuestos para tu obra en Ecuador</p>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
           </div>
         </div>
         <nav>
           <a href="index.html">Inicio</a>
           <a href="cemento.html">Losa / Hormigón</a>
           <a href="bloques.html">Paredes</a>
-          <a href="hierro.html" style="color: var(--naranja-ferretero)"
-            >Hierro Estructural</a
-          >
+          <a href="hierro.html" class="active">Hierro</a>
+          <a href="pinturas.html">Pinturas</a>
+          <a href="ceramica.html">Cerámica</a>
+          <a href="acabados.html">Acabados</a>
           <a href="contacto.html">Contacto</a>
         </nav>
       </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="container">
-      <!-- SECCIÓN TITULO PRINCIPAL -->
       <div class="card">
         <h2>
           Calculadora Técnica de Hierro Estructural (Zapatas, Columnas y Vigas)
         </h2>
         <p>
-          Determina la cantidad de varillas de 12 metros, quintales de acero y
-          alambre de amarre según el número de pisos de tu edificación y la
-          estructura a armar (Norma NEC Ecuador).
+          Determina la cantidad de varillas de 12m (o 20 ft / 40 ft), quintales,
+          kilogramos y libras totales de acero con normas de armado antisísmico.
         </p>
       </div>
 
-      <!-- CALCULADORA (PARTE SUPERIOR) -->
       <div class="grid-2">
-        <!-- FORMULARIO DE ENTRADA -->
         <section class="card" style="margin-bottom: 0">
           <h2>1. Configuración de la Estructura</h2>
 
@@ -61,6 +60,31 @@
               calcularHierro();
             "
           >
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades / Región:</strong></label
+              >
+              <select
+                id="sistema-unidades"
+                onchange="cambiarSistemaUnidadesHierro()"
+              >
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, mm, Quintales)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, Pulgadas, Libras / lb)
+                </option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="tipo-elemento">Elemento a Armar:</label>
               <select
@@ -75,7 +99,9 @@
             </div>
 
             <div class="form-group">
-              <label for="num-pisos">Proyección de Pisos de la Casa:</label>
+              <label for="num-pisos"
+                >Proyección de Pisos de la Edificación:</label
+              >
               <select id="num-pisos" onchange="sugerirArmado()">
                 <option value="1">
                   1 Piso / Planta Baja (Construcción Liviana)
@@ -103,7 +129,7 @@
               </div>
 
               <div class="form-group">
-                <label for="longitud-elem"
+                <label for="longitud-elem" id="label-long-elem"
                   >Longitud / Altura de cada una (metros):</label
                 >
                 <input
@@ -111,7 +137,7 @@
                   id="longitud-elem"
                   step="0.1"
                   min="0.5"
-                  placeholder="Ej: 3.00 (m de alto)"
+                  placeholder="Ej: 3.00"
                   value="3.0"
                 />
               </div>
@@ -135,13 +161,13 @@
                 >
                 <select id="diametro-principal">
                   <option value="10">
-                    10 mm (3/8") - Solo varillas secundarias o 1 piso
+                    10 mm (#3 - 3/8") - Varillas secundarias
                   </option>
                   <option value="12" selected>
-                    12 mm (1/2") - Estándar residencial Ecuador
+                    12 mm (#4 - 1/2") - Estándar residencial
                   </option>
                   <option value="14">
-                    14 mm (9/16") - Para 2 y 3 pisos antisísmico
+                    14 mm (#4.5 - 9/16") - Para 2 y 3 pisos
                   </option>
                 </select>
               </div>
@@ -152,11 +178,9 @@
                 >
                 <select id="estribos-diametro">
                   <option value="8" selected>
-                    8 mm - Estándar para estribos
+                    8 mm (#2.5 - 5/16") - Estándar estribos
                   </option>
-                  <option value="10">
-                    10 mm - Para vigas/columnas de gran carga
-                  </option>
+                  <option value="10">10 mm (#3 - 3/8") - Carga alta</option>
                 </select>
               </div>
             </div>
@@ -175,16 +199,14 @@
               </div>
 
               <div class="form-group">
-                <label for="medida-zapata"
+                <label for="medida-zapata" id="label-medida-zapata"
                   >Dimensiones de la Zapata (Lado en cm):</label
                 >
                 <select id="medida-zapata">
-                  <option value="80">80 x 80 cm (1 Piso)</option>
-                  <option value="100" selected>
-                    100 x 100 cm (1 a 2 Pisos)
-                  </option>
-                  <option value="120">120 x 120 cm (2 a 3 Pisos)</option>
-                  <option value="150">150 x 150 cm (3 Pisos pesados)</option>
+                  <option value="80">80 x 80 cm (32" x 32")</option>
+                  <option value="100" selected>100 x 100 cm (40" x 40")</option>
+                  <option value="120">120 x 120 cm (48" x 48")</option>
+                  <option value="150">150 x 150 cm (60" x 60")</option>
                 </select>
               </div>
 
@@ -194,23 +216,21 @@
                 >
                 <select id="diametro-zapata">
                   <option value="12" selected>
-                    12 mm (1/2") - Recomendado
+                    12 mm (#4 - 1/2") - Recomendado
                   </option>
-                  <option value="14">14 mm (9/16") - Carga Alta</option>
+                  <option value="14">14 mm (#4.5 - 9/16") - Carga Alta</option>
                 </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="marca-preferida"
-                >Marca de Acero de Preferencia:</label
-              >
+              <label for="marca-preferida">Marca de Acero / Norma:</label>
               <select id="marca-preferida">
                 <option value="Adelca / Novacero (NTE INEN 2167 - Grado 60)">
-                  Adelca / Novacero (Laminado Grado 60)
+                  Adelca / Novacero (Grado 60 / 420 MPa)
                 </option>
-                <option value="Andec / Arequipa / XL">
-                  Andec / Arequipa / XL Commercial
+                <option value="Andec / Arequipa / ASTM A615 (EE.UU.)">
+                  Andec / Arequipa / ASTM A615 (EE.UU.)
                 </option>
               </select>
             </div>
@@ -225,12 +245,11 @@
                 font-size: 1rem;
               "
             >
-              Calcular Hierro y Quintales
+              Calcular Hierro y Pesos
             </button>
           </form>
         </section>
 
-        <!-- TARJETA DE RESULTADOS -->
         <section class="card" style="margin-bottom: 0">
           <h2>2. Presupuesto de Acero</h2>
 
@@ -246,7 +265,7 @@
           >
             <p style="color: #64748b">
               Selecciona las características de tu armado y haz clic en
-              <strong>"Calcular Hierro y Quintales"</strong>.
+              <strong>"Calcular Hierro y Pesos"</strong>.
             </p>
           </div>
 
@@ -284,28 +303,21 @@
         </section>
       </div>
 
-      <!-- SECCIÓN TEÓRICA E INFORMATIVA -->
       <section style="margin-top: 2.5rem">
         <div class="card">
-          <h2>Guía de Acero Estructural y Normativa NEC en Ecuador</h2>
+          <h2>Guía de Acero Estructural y Equivalencias Internacionales</h2>
           <p>
-            Aprende las características técnicas del hierro corrugado,
-            equivalencias de peso por quintal y recomendaciones de armado
-            antisísmico.
+            Aprende sobre las normas de fabricación, equivalencia de diámetros
+            en milímetros y número de varilla (#3, #4, #5) y pesos en
+            quintales/libras.
           </p>
         </div>
 
         <div class="grid-2">
-          <!-- TABLA DE PESOS Y QUINTALES -->
           <article class="card">
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
-              1. Tabla de Peso y Equivalencia por Varilla (12 metros)
+              1. Tabla de Diámetros y Pesos Nominal
             </h3>
-            <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1rem">
-              Varillas corrugadas Grado 60 / $4200\text{ kg/cm}^2$ bajo norma
-              **NTE INEN 2167**:
-            </p>
-
             <table
               style="
                 width: 100%;
@@ -316,19 +328,15 @@
             >
               <thead>
                 <tr style="background-color: var(--azul-marino); color: white">
-                  <th style="padding: 0.6rem; border-radius: 4px 0 0 0">
-                    Diámetro
-                  </th>
-                  <th style="padding: 0.6rem">Peso por Varilla (12m)</th>
-                  <th style="padding: 0.6rem; border-radius: 0 4px 0 0">
-                    Varillas / Quintal (46 kg)
-                  </th>
+                  <th style="padding: 0.6rem">Métrico</th>
+                  <th style="padding: 0.6rem">EE.UU. / Imperial</th>
+                  <th style="padding: 0.6rem">Peso por metro</th>
                 </tr>
               </thead>
               <tbody>
                 <tr style="border-bottom: 1px solid #e2e8f0">
-                  <td style="padding: 0.6rem"><strong>8 mm (5/16")</strong></td>
-                  <td style="padding: 0.6rem">4.74 kg</td>
+                  <td style="padding: 0.6rem"><strong>8 mm</strong></td>
+                  <td style="padding: 0.6rem">#2.5 (5/16 in)</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -336,12 +344,12 @@
                       font-weight: bold;
                     "
                   >
-                    ~ 9.7 varillas
+                    0.395 kg/m
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
-                  <td style="padding: 0.6rem"><strong>10 mm (3/8")</strong></td>
-                  <td style="padding: 0.6rem">7.40 kg</td>
+                  <td style="padding: 0.6rem"><strong>10 mm</strong></td>
+                  <td style="padding: 0.6rem">#3 (3/8 in)</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -349,12 +357,12 @@
                       font-weight: bold;
                     "
                   >
-                    ~ 6.2 varillas
+                    0.617 kg/m
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
-                  <td style="padding: 0.6rem"><strong>12 mm (1/2")</strong></td>
-                  <td style="padding: 0.6rem">10.65 kg</td>
+                  <td style="padding: 0.6rem"><strong>12 mm</strong></td>
+                  <td style="padding: 0.6rem">#4 (1/2 in)</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -362,14 +370,12 @@
                       font-weight: bold;
                     "
                   >
-                    ~ 4.3 varillas
+                    0.888 kg/m
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 0.6rem">
-                    <strong>14 mm (9/16")</strong>
-                  </td>
-                  <td style="padding: 0.6rem">14.50 kg</td>
+                  <td style="padding: 0.6rem"><strong>14 mm</strong></td>
+                  <td style="padding: 0.6rem">#4.5 (9/16 in)</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -377,14 +383,13 @@
                       font-weight: bold;
                     "
                   >
-                    ~ 3.1 varillas
+                    1.210 kg/m
                   </td>
                 </tr>
               </tbody>
             </table>
           </article>
 
-          <!-- RECOMENDACIONES TÉCNICAS -->
           <article class="card">
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
               2. Criterios de Armado Antisísmico
@@ -398,24 +403,19 @@
               "
             >
               <li style="margin-bottom: 0.5rem">
-                <strong>Ganchos Antisísmicos a 135°:</strong> Los estribos o
-                flejes deben doblarse en ganchos de $135^\circ$ con al menos
-                $7.5\text{ cm}$ de pata hacia el interior para evitar que se
-                abran durante un sismo.
+                <strong>Doblez a 135°:</strong> Los ganchos de estribos deben
+                cerrarse hacia el núcleo de concreto para evitar fallas frágiles
+                durante sismos.
               </li>
               <li style="margin-bottom: 0.5rem">
-                <strong>Empalmes y Solapes:</strong> La longitud de traslape
-                mínima recomendada para varilla de $12\text{ mm}$ es de al menos
-                $50\text{ cm}$ a $60\text{ cm}$.
-              </li>
-              <li style="margin-bottom: 0.5rem">
-                <strong>Marcas en Ecuador (Adelca, Novacero, Andec):</strong>
-                Garantizan ductilidad y cumplimiento de la norma sísmica INEN.
+                <strong>1 Quintal:</strong> Equivale a $46\text{ kg}$ o
+                $100\text{ libras}$ comerciales en Ecuador y varios países
+                sudamericanos.
               </li>
               <li>
-                <strong>Cálculo de Alambre de Amarre:</strong> Se requiere en
-                promedio $1.0\text{ kg}$ a $1.5\text{ kg}$ de alambre de amarre
-                #18 por cada quintal de acero armado.
+                <strong>Alambre de Amarre:</strong> Se calcula aproximadamente
+                $1.2\text{ kg}$ por cada quintal de acero armado ($100\text{
+                lb}$).
               </li>
             </ul>
           </article>
@@ -427,20 +427,24 @@
       <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- LÓGICA JAVASCRIPT DE LA CALCULADORA -->
     <script>
+      function cambiarSistemaUnidadesHierro() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-long-elem").innerText =
+            "Longitud / Altura de cada una (Pies / Feet):";
+        } else {
+          document.getElementById("label-long-elem").innerText =
+            "Longitud / Altura de cada una (metros):";
+        }
+      }
+
       function cambiarElementoEstructural() {
         const tipo = document.getElementById("tipo-elemento").value;
-        const colViga = document.getElementById("campos-col-viga");
-        const zapatas = document.getElementById("campos-zapatas");
-
-        if (tipo === "zapatas") {
-          colViga.style.display = "none";
-          zapatas.style.display = "block";
-        } else {
-          colViga.style.display = "block";
-          zapatas.style.display = "none";
-        }
+        document.getElementById("campos-col-viga").style.display =
+          tipo === "zapatas" ? "none" : "block";
+        document.getElementById("campos-zapatas").style.display =
+          tipo === "zapatas" ? "block" : "none";
       }
 
       function sugerirArmado() {
@@ -462,17 +466,12 @@
       }
 
       function calcularHierro() {
+        const sistema = document.getElementById("sistema-unidades").value;
         const tipo = document.getElementById("tipo-elemento").value;
         const pisos = document.getElementById("num-pisos").value;
         const marca = document.getElementById("marca-preferida").value;
 
-        // Tabla de Pesos por metro lineal según diámetro (kg/m)
-        const pesoPorMetro = {
-          8: 0.395,
-          10: 0.617,
-          12: 0.888,
-          14: 1.21,
-        };
+        const pesoPorMetro = { 8: 0.395, 10: 0.617, 12: 0.888, 14: 1.21 };
 
         let detalleEstructura = "";
         let totalMetrosPrincipal = 0;
@@ -486,7 +485,7 @@
           const cant = parseFloat(
             document.getElementById("cant-elementos").value,
           );
-          const longitud = parseFloat(
+          const longInput = parseFloat(
             document.getElementById("longitud-elem").value,
           );
           const numVarillas = parseInt(
@@ -499,25 +498,23 @@
             document.getElementById("estribos-diametro").value,
           );
 
-          if (isNaN(cant) || isNaN(longitud) || cant <= 0 || longitud <= 0) {
+          if (isNaN(cant) || isNaN(longInput) || cant <= 0 || longInput <= 0) {
             alert("Por favor ingresa cantidad y longitud válidas.");
             return;
           }
 
-          // Metros totales principales (incluye 10% para empalmes y traslapes)
-          const metrosPorElem = longitud * 1.1;
+          const longitudM =
+            sistema === "imperial" ? longInput * 0.3048 : longInput;
+          const metrosPorElem = longitudM * 1.1;
           totalMetrosPrincipal = cant * numVarillas * metrosPorElem;
           varillasTotalPrincipal = Math.ceil(totalMetrosPrincipal / 12);
 
-          // Estribos cada 15cm en promedio
-          const numEstribosPorElem = Math.ceil(longitud / 0.15);
-          const longitudUnEstribo = 0.9; // Perímetro promedio de estribo 20x20cm con ganchos
-          totalMetrosEstribos = cant * numEstribosPorElem * longitudUnEstribo;
+          const numEstribosPorElem = Math.ceil(longitudM / 0.15);
+          totalMetrosEstribos = cant * numEstribosPorElem * 0.9;
           varillasTotalEstribo = Math.ceil(totalMetrosEstribos / 12);
 
-          detalleEstructura = `${cant} Columnas/Vigas de ${longitud}m (${numVarillas} varillas de ${diamPrincipal}mm c/u)`;
+          detalleEstructura = `${cant} Columnas/Vigas (${longInput} ${sistema === "imperial" ? "ft" : "m"}) con ${numVarillas} varillas de ${diamPrincipal}mm`;
         } else {
-          // Zapatas
           const cantZap = parseFloat(
             document.getElementById("cant-zapatas").value,
           );
@@ -533,30 +530,24 @@
             return;
           }
 
-          // Malla en ambas direcciones (varillas cada 12.5 cm)
           const ladoM = ladoZapCm / 100;
           const varillasPorLado = Math.ceil(ladoM / 0.125) + 1;
-          const totalVarillasPorZapata = varillasPorLado * 2; // Cruzadas
-          const longitudUnaVarillaZap = ladoM + 0.3; // con patillas de doblado
-
           totalMetrosPrincipal =
-            cantZap * totalVarillasPorZapata * longitudUnaVarillaZap;
+            cantZap * (varillasPorLado * 2) * (ladoM + 0.3);
           varillasTotalPrincipal = Math.ceil(totalMetrosPrincipal / 12);
 
           detalleEstructura = `${cantZap} Zapatas de ${ladoZapCm}x${ladoZapCm} cm (Parrilla con varilla de ${diamPrincipal}mm)`;
         }
 
-        // Cálculos de Peso
         const pesoKgPrincipal =
           totalMetrosPrincipal * pesoPorMetro[diamPrincipal];
         const pesoKgEstribo = totalMetrosEstribos * pesoPorMetro[diamEstribo];
         const pesoTotalKg = pesoKgPrincipal + pesoKgEstribo;
 
-        // 1 Quintal en Ecuador = 46 kg (o 100 libras)
         const quintalesTotales = (pesoTotalKg / 46).toFixed(2);
-        const kilosAlambre = Math.ceil(quintalesTotales * 1.2); // ~1.2 kg de alambre por quintal
+        const librasTotales = (pesoTotalKg * 2.20462).toFixed(1);
+        const kilosAlambre = Math.ceil(pesoTotalKg * 0.026);
 
-        // Renderizar resultados
         const resultadoBox = document.getElementById("resultado-box");
         resultadoBox.style.backgroundColor = "var(--azul-claro)";
         resultadoBox.style.textAlign = "left";
@@ -568,7 +559,7 @@
           htmlEstribos = `
           <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
             <span><strong>Varilla de ${diamEstribo}mm (Estribos / Flejes):</strong></span>
-            <strong>${varillasTotalEstribo} varillas de 12m</strong>
+            <strong>${varillasTotalEstribo} varillas de 12m (40 ft)</strong>
           </li>`;
           txtEstribosWA = `\n- Varilla para estribos (${diamEstribo}mm): ${varillasTotalEstribo} varillas`;
         }
@@ -577,7 +568,7 @@
         <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
           <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Detalle: <strong>${detalleEstructura}</strong></p>
           <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
-            Peso Total Estimado: <span style="color: var(--naranja-ferretero);">${quintalesTotales} Quintales</span>
+            Peso Total Estimado: <span style="color: var(--naranja-ferretero);">${quintalesTotales} Quintales</span> / <span>${librasTotales} lb</span>
             <span style="font-size: 0.8rem; color: #64748b; font-weight: normal;">(~${pesoTotalKg.toFixed(1)} kg)</span>
           </p>
         </div>
@@ -585,22 +576,19 @@
         <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
         <ul style="list-style: none; padding: 0;">
           <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
-            <span><strong>Varilla Corrugada ${diamPrincipal}mm (12m):</strong></span>
+            <span><strong>Varilla Corrugada ${diamPrincipal}mm (12m / 40 ft):</strong></span>
             <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${varillasTotalPrincipal} varillas</strong>
           </li>
           ${htmlEstribos}
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
             <span><strong>Alambre de Amarre #18:</strong></span>
-            <strong>${kilosAlambre} kg aprox.</strong>
+            <strong>${kilosAlambre} kg / ${(kilosAlambre * 2.205).toFixed(1)} lb aprox.</strong>
           </li>
         </ul>
-        <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.8rem;">* Preferencia de marca: <strong>${marca}</strong>.</p>
+        <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.8rem;">* Norma / Marca: <strong>${marca}</strong>.</p>
       `;
 
-        // Configurar WhatsApp
-        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar hierro estructural:\n\n- Estructura: ${detalleEstructura}\n- Proyección: ${pisos} Piso(s)\n- Varillas principales de ${diamPrincipal}mm: ${varillasTotalPrincipal} varillas (12m)${txtEstribosWA}\n- Total en Quintales: ${quintalesTotales} qq\n- Alambre de amarre: ${kilosAlambre} kg\n- Marca preferida: ${marca}`;
-
-        // REEMPLAZA CON TU NÚMERO DE WHATSAPP BUSINESS REAL:
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar hierro estructural:\n\n- Estructura: ${detalleEstructura}\n- Varillas principales ${diamPrincipal}mm: ${varillasTotalPrincipal} varillas (12m)${txtEstribosWA}\n- Total en Quintales: ${quintalesTotales} qq (${librasTotales} lb)\n- Alambre de amarre: ${kilosAlambre} kg`;
         const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
 
         document.getElementById("whatsapp-link").href = urlWA;

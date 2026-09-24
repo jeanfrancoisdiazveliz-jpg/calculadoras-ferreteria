@@ -18,15 +18,20 @@
           />
           <div class="brand-text">
             <h1>Ferretería <span>Don Iván</span></h1>
-            <p>Calculadoras técnicas y presupuestos para tu obra en Ecuador</p>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
           </div>
         </div>
         <nav>
           <a href="index.html">Inicio</a>
           <a href="cemento.html">Losa / Hormigón</a>
-          <a href="bloques.html" style="color: var(--naranja-ferretero)"
-            >Paredes</a
-          >
+          <a href="bloques.html" class="active">Paredes</a>
+          <a href="hierro.html">Hierro</a>
+          <a href="pinturas.html">Pinturas</a>
+          <a href="ceramica.html">Cerámica</a>
+          <a href="acabados.html">Acabados</a>
           <a href="contacto.html">Contacto</a>
         </nav>
       </div>
@@ -36,13 +41,12 @@
       <div class="card">
         <h2>Calculadora Técnica de Bloques, Ladrillos y Mortero de Pegado</h2>
         <p>
-          Calcula la cantidad exacta de bloques (prensados o tipo Latacunga),
-          cemento, arena o sacos de mortero premezclado INTACO para tus paredes.
+          Calcula la cantidad exacta de bloques (prensados, Latacunga o estándar
+          internacional), cemento, arena o sacos de mortero premezclado.
         </p>
       </div>
 
       <div class="grid-2">
-        <!-- FORMULARIO DE ENTRADA -->
         <section class="card" style="margin-bottom: 0">
           <h2>1. Datos de la Pared y Material</h2>
 
@@ -53,6 +57,31 @@
               calcularPared();
             "
           >
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades / Región:</strong></label
+              >
+              <select
+                id="sistema-unidades"
+                onchange="cambiarSistemaUnidadesBloques()"
+              >
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, cm, m²)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, Pulgadas, sq ft)
+                </option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="tipo-bloque">Tipo de Bloque / Ladrillo:</label>
               <select id="tipo-bloque" onchange="evaluarTipoBloque()">
@@ -77,7 +106,6 @@
               </select>
             </div>
 
-            <!-- CAMPOS PERSONALIZADOS (OCULTOS POR DEFECTO) -->
             <div
               id="campos-custom"
               style="
@@ -90,15 +118,29 @@
               "
             >
               <div class="form-group">
-                <label for="custom-largo">Largo del bloque (cm):</label>
-                <input type="number" id="custom-largo" placeholder="Ej: 37" />
+                <label for="custom-largo" id="label-cust-largo"
+                  >Largo del bloque (cm):</label
+                >
+                <input
+                  type="number"
+                  id="custom-largo"
+                  placeholder="Ej: 37 o 16 in"
+                />
               </div>
               <div class="form-group">
-                <label for="custom-alto">Alto del bloque (cm):</label>
-                <input type="number" id="custom-alto" placeholder="Ej: 19" />
+                <label for="custom-alto" id="label-cust-alto"
+                  >Alto del bloque (cm):</label
+                >
+                <input
+                  type="number"
+                  id="custom-alto"
+                  placeholder="Ej: 19 o 8 in"
+                />
               </div>
               <div class="form-group">
-                <label for="custom-ancho">Ancho/Espesor del bloque (cm):</label>
+                <label for="custom-ancho" id="label-cust-ancho"
+                  >Ancho/Espesor del bloque (cm):</label
+                >
                 <input type="number" id="custom-ancho" placeholder="Ej: 12" />
               </div>
             </div>
@@ -110,13 +152,15 @@
                   Mezcla Tradicional (Cemento + Arena Fina)
                 </option>
                 <option value="intaco_gruesa">
-                  Sacos Premezclados INTACO Capa Gruesa / Pegablock
+                  Sacos Premezclados Mortero (INTACO / Quikrete 40kg)
                 </option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="largo-pared">Largo total de pared (metros):</label>
+              <label for="largo-pared" id="label-largo-pared"
+                >Largo total de pared (metros):</label
+              >
               <input
                 type="number"
                 id="largo-pared"
@@ -127,7 +171,9 @@
             </div>
 
             <div class="form-group">
-              <label for="alto-pared">Alto de pared (metros):</label>
+              <label for="alto-pared" id="label-alto-pared"
+                >Alto de pared (metros):</label
+              >
               <input
                 type="number"
                 id="alto-pared"
@@ -138,7 +184,7 @@
             </div>
 
             <div class="form-group">
-              <label for="descuento-puertas"
+              <label for="descuento-puertas" id="label-desc-puertas"
                 >Área a descontar (Puertas / Ventanas en m²):</label
               >
               <input
@@ -179,7 +225,6 @@
           </form>
         </section>
 
-        <!-- TARJETA DE RESULTADOS -->
         <section class="card" style="margin-bottom: 0">
           <h2>2. Presupuesto de Materiales</h2>
 
@@ -233,13 +278,12 @@
         </section>
       </div>
 
-      <!-- SECCIÓN DE TEORÍA Y GUÍA TÉCNICA -->
       <section style="margin-top: 2.5rem">
         <div class="card">
-          <h2>Guía Técnica de Mampostería y Pegado de Paredes en Ecuador</h2>
+          <h2>Guía Técnica de Mampostería y Pegado de Paredes</h2>
           <p>
             Aprende las diferencias entre bloque prensado y artesanal,
-            rendimientos por m² y la elección adecuada del mortero de pegado.
+            rendimientos por m² / sq ft y la elección adecuada del mortero.
           </p>
         </div>
 
@@ -248,11 +292,6 @@
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
               1. Comparativa de Rendimientos por m²
             </h3>
-            <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1rem">
-              Las dimensiones de las piezas varían según el fabricante. Esta
-              tabla contempla la junta de sisa estándar de 1.5 cm:
-            </p>
-
             <table
               style="
                 width: 100%;
@@ -263,21 +302,17 @@
             >
               <thead>
                 <tr style="background-color: var(--azul-marino); color: white">
-                  <th style="padding: 0.6rem; border-radius: 4px 0 0 0">
-                    Tipo de Pieza
-                  </th>
+                  <th style="padding: 0.6rem">Tipo de Pieza</th>
                   <th style="padding: 0.6rem">Medida Nominal</th>
-                  <th style="padding: 0.6rem; border-radius: 0 4px 0 0">
-                    Unidades / m²
-                  </th>
+                  <th style="padding: 0.6rem">Unidades / m²</th>
                 </tr>
               </thead>
               <tbody>
                 <tr style="border-bottom: 1px solid #e2e8f0">
                   <td style="padding: 0.6rem">
-                    <strong>Bloque Prensado Pesado</strong>
+                    <strong>Bloque Prensado 40x20</strong>
                   </td>
-                  <td style="padding: 0.6rem">40 x 20 cm</td>
+                  <td style="padding: 0.6rem">16" x 8" in</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -335,21 +370,17 @@
               "
             >
               <li style="margin-bottom: 0.5rem">
-                <strong>Paredes Exteriores vs Interiores:</strong> Para
-                cerramientos exteriores usa bloque de 15 cm. Para divisiones de
-                cuartos o baños usa bloque de 10 cm para optimizar metros
-                cuadrados habitables.
+                <strong>Paredes Exteriores vs Interiores:</strong> Para muros
+                exteriores usa bloque de 15 cm (6"). Para divisiones interiores
+                usa bloque de 10 cm (4").
               </li>
               <li style="margin-bottom: 0.5rem">
-                <strong>Uso de INTACO / Premezclados:</strong> Si usas bloque
-                artesanal con bordes irregulares, el mortero
-                <strong>INTACO Capa Gruesa / Pegablock</strong> compensa las
-                diferencias de medida fácilmente.
+                <strong>Mortero Premezclado:</strong> Un saco de 40 kg (90 lb)
+                rinde aproximadamente para pegar 12 a 15 bloques.
               </li>
               <li>
-                <strong>Chicotes de Varilla:</strong> Coloca varilla de 8mm
-                amarrada a las columnas cada 3 hiladas para evitar fisuras por
-                sismos.
+                <strong>Refuerzo Antisísmico:</strong> Coloca varilla horizontal
+                de amarre cada 3 hiladas de bloque.
               </li>
             </ul>
           </article>
@@ -362,37 +393,83 @@
     </footer>
 
     <script>
-      function evaluarTipoBloque() {
-        const tipo = document.getElementById("tipo-bloque").value;
-        const camposCustom = document.getElementById("campos-custom");
-
-        if (tipo === "personalizado") {
-          camposCustom.style.display = "block";
+      function cambiarSistemaUnidadesBloques() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-largo-pared").innerText =
+            "Largo total de pared (Pies / Feet):";
+          document.getElementById("label-alto-pared").innerText =
+            "Alto de pared (Pies / Feet):";
+          document.getElementById("label-desc-puertas").innerText =
+            "Área a descontar (Pies² / sq ft):";
+          document.getElementById("label-cust-largo").innerText =
+            "Largo del bloque (Pulgadas / Inches):";
+          document.getElementById("label-cust-alto").innerText =
+            "Alto del bloque (Pulgadas / Inches):";
+          document.getElementById("label-cust-ancho").innerText =
+            "Ancho del bloque (Pulgadas / Inches):";
         } else {
-          camposCustom.style.display = "none";
+          document.getElementById("label-largo-pared").innerText =
+            "Largo total de pared (metros):";
+          document.getElementById("label-alto-pared").innerText =
+            "Alto de pared (metros):";
+          document.getElementById("label-desc-puertas").innerText =
+            "Área a descontar (Puertas / Ventanas en m²):";
+          document.getElementById("label-cust-largo").innerText =
+            "Largo del bloque (cm):";
+          document.getElementById("label-cust-alto").innerText =
+            "Alto del bloque (cm):";
+          document.getElementById("label-cust-ancho").innerText =
+            "Ancho/Espesor del bloque (cm):";
         }
       }
 
+      function evaluarTipoBloque() {
+        const tipo = document.getElementById("tipo-bloque").value;
+        const camposCustom = document.getElementById("campos-custom");
+        camposCustom.style.display =
+          tipo === "personalizado" ? "block" : "none";
+      }
+
       function calcularPared() {
+        const sistema = document.getElementById("sistema-unidades").value;
         const tipo = document.getElementById("tipo-bloque").value;
         const tipoMortero = document.getElementById("tipo-mortero").value;
-        const largo = parseFloat(document.getElementById("largo-pared").value);
-        const alto = parseFloat(document.getElementById("alto-pared").value);
-        const descuento =
+        const largoVal = parseFloat(
+          document.getElementById("largo-pared").value,
+        );
+        const altoVal = parseFloat(document.getElementById("alto-pared").value);
+        const descuentoVal =
           parseFloat(document.getElementById("descuento-puertas").value) || 0;
         const desperdicio = parseFloat(
           document.getElementById("desperdicio").value,
         );
 
-        if (isNaN(largo) || isNaN(alto) || largo <= 0 || alto <= 0) {
-          alert("Por favor ingresa un largo y alto de pared válidos.");
+        if (
+          isNaN(largoVal) ||
+          isNaN(altoVal) ||
+          largoVal <= 0 ||
+          altoVal <= 0
+        ) {
+          alert("Por favor ingresa un largo y alto válidos.");
           return;
         }
 
-        const areaBruta = largo * alto;
-        const areaNeta = areaBruta - descuento;
+        let areaNetaM2 = 0;
+        let areaBrutaM2 = 0;
+        let descM2 = 0;
 
-        if (areaNeta <= 0) {
+        if (sistema === "imperial") {
+          areaBrutaM2 = largoVal * altoVal * 0.092903;
+          descM2 = descuentoVal * 0.092903;
+          areaNetaM2 = areaBrutaM2 - descM2;
+        } else {
+          areaBrutaM2 = largoVal * altoVal;
+          descM2 = descuentoVal;
+          areaNetaM2 = areaBrutaM2 - descM2;
+        }
+
+        if (areaNetaM2 <= 0) {
           alert(
             "El área a descontar no puede ser mayor o igual al área total.",
           );
@@ -408,12 +485,12 @@
           largoCm = 40;
           altoCm = 20;
           anchoCm = 15;
-          nombrePieza = "Bloque Prensado 15x20x40 cm";
+          nombrePieza = "Bloque Prensado 15x20x40 cm (6x8x16 in)";
         } else if (tipo === "prensado10") {
           largoCm = 40;
           altoCm = 20;
           anchoCm = 10;
-          nombrePieza = "Bloque Prensado 10x20x40 cm";
+          nombrePieza = "Bloque Prensado 10x20x40 cm (4x8x16 in)";
         } else if (tipo === "latacunga15") {
           largoCm = 38;
           altoCm = 18;
@@ -430,48 +507,57 @@
           anchoCm = 10;
           nombrePieza = "Ladrillo Mambrón 10x15x30 cm";
         } else if (tipo === "personalizado") {
-          largoCm = parseFloat(document.getElementById("custom-largo").value);
-          altoCm = parseFloat(document.getElementById("custom-alto").value);
-          anchoCm =
+          const custL = parseFloat(
+            document.getElementById("custom-largo").value,
+          );
+          const custH = parseFloat(
+            document.getElementById("custom-alto").value,
+          );
+          const custW =
             parseFloat(document.getElementById("custom-ancho").value) || 12;
 
-          if (isNaN(largoCm) || isNaN(altoCm) || largoCm <= 0 || altoCm <= 0) {
-            alert(
-              "Por favor ingresa el largo y alto del bloque personalizado.",
-            );
+          if (isNaN(custL) || isNaN(custH) || custL <= 0 || custH <= 0) {
+            alert("Por favor ingresa las medidas del bloque personalizado.");
             return;
           }
-          nombrePieza = `Bloque Personalizado (${largoCm}x${altoCm}x${anchoCm} cm)`;
+
+          if (sistema === "imperial") {
+            largoCm = custL * 2.54;
+            altoCm = custH * 2.54;
+            anchoCm = custW * 2.54;
+          } else {
+            largoCm = custL;
+            altoCm = custH;
+            anchoCm = custW;
+          }
+          nombrePieza = `Bloque Personalizado (${largoCm.toFixed(1)}x${altoCm.toFixed(1)} cm)`;
         }
 
-        // Cálculo de unidades considerando sisa promedio de 1.5 cm
         const largoEfectivoM = (largoCm + 1.5) / 100;
         const altoEfectivoM = (altoCm + 1.5) / 100;
         const unidadesPorM2 = 1 / (largoEfectivoM * altoEfectivoM);
 
-        const totalPiezasTeorico = areaNeta * unidadesPorM2;
+        const totalPiezasTeorico = areaNetaM2 * unidadesPorM2;
         const totalPiezasConDesperdicio = Math.ceil(
           totalPiezasTeorico * (1 + desperdicio),
         );
 
-        // Volumen de mortero de pegado (ajustado por el ancho del bloque)
         const factorEspesor = anchoCm / 15;
         const m3MorteroBase = 0.022 * factorEspesor;
         const volumenMorteroTotal =
-          areaNeta * m3MorteroBase * (1 + desperdicio);
+          areaNetaM2 * m3MorteroBase * (1 + desperdicio);
 
         let htmlMortero = "";
         let textoMorteroWA = "";
 
         if (tipoMortero === "intaco_gruesa") {
-          // Un saco de INTACO 40kg rinde aprox 0.02 m3 de mortero
           const sacosIntaco = Math.ceil(volumenMorteroTotal / 0.02);
           htmlMortero = `
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
-            <span><strong>Sacos Mortero INTACO Capa Gruesa / Pegablock (40kg):</strong></span>
+            <span><strong>Sacos Mortero Premezclado (40kg / 90lb):</strong></span>
             <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${sacosIntaco} sacos</strong>
           </li>`;
-          textoMorteroWA = `- Mortero INTACO Capa Gruesa: ${sacosIntaco} sacos (40kg)`;
+          textoMorteroWA = `- Mortero Premezclado: ${sacosIntaco} sacos (40kg)`;
         } else {
           const sacosCemento = Math.ceil(volumenMorteroTotal * 7.5);
           const m3ArenaFina = (volumenMorteroTotal * 1.05).toFixed(2);
@@ -482,10 +568,12 @@
           </li>
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
             <span><strong>Arena Fina / Cernida para pegado:</strong></span>
-            <strong>${m3ArenaFina} m³</strong>
+            <strong>${m3ArenaFina} m³ / ${(m3ArenaFina * 1.308).toFixed(2)} yd³</strong>
           </li>`;
-          textoMorteroWA = `- Cemento para pegado: ${sacosCemento} sacos (50kg)\n- Arena Fina: ${m3ArenaFina} m³`;
+          textoMorteroWA = `- Cemento pegado: ${sacosCemento} sacos\n- Arena Fina: ${m3ArenaFina} m³`;
         }
+
+        const areaSqFt = (areaNetaM2 * 10.7639).toFixed(1);
 
         const resultadoBox = document.getElementById("resultado-box");
         resultadoBox.style.backgroundColor = "var(--azul-claro)";
@@ -495,8 +583,7 @@
         <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
           <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Material: <strong>${nombrePieza}</strong></p>
           <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
-            Área Útil de Pared: <span style="color: var(--naranja-ferretero);">${areaNeta.toFixed(2)} m²</span>
-            <span style="font-size: 0.8rem; color: #64748b; font-weight: normal;">(Total: ${areaBruta.toFixed(2)}m² - desc: ${descuento.toFixed(2)}m²)</span>
+            Área Útil: <span style="color: var(--naranja-ferretero);">${areaNetaM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
           </p>
         </div>
 
@@ -510,9 +597,7 @@
         </ul>
       `;
 
-        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar materiales para pared:\n\n- Material: ${nombrePieza}\n- Área útil: ${areaNeta.toFixed(2)} m²\n- Cantidad de Piezas: ${totalPiezasConDesperdicio} unidades\n${textoMorteroWA}`;
-
-        // REEMPLAZA EL NUMERO DE WHATSAPP CON EL TUYO:
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar materiales para pared:\n\n- Material: ${nombrePieza}\n- Área útil: ${areaNetaM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Cantidad de Piezas: ${totalPiezasConDesperdicio} unidades\n${textoMorteroWA}`;
         const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
 
         document.getElementById("whatsapp-link").href = urlWA;
