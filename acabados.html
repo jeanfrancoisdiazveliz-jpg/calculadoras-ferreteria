@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Calculadora de Acabados de Lujo y Tejas PVC | Ferretería Don Iván
+    </title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <header>
+      <div class="header-container">
+        <div class="brand-box">
+          <img
+            src="IMAGENES/LOGO_FERRETERIA.png"
+            alt="Ferretería Don Iván Logo"
+            class="logo-img"
+            onerror="this.src = 'IMAGENES/LOGO_FERRETERIA.jpg'"
+          />
+          <div class="brand-text">
+            <h1>Ferretería <span>Don Iván</span></h1>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
+          </div>
+        </div>
+        <nav>
+          <a href="index.html">Inicio</a>
+          <a href="cemento.html">Losa / Hormigón</a>
+          <a href="bloques.html">Paredes</a>
+          <a href="hierro.html">Hierro</a>
+          <a href="pinturas.html">Pinturas</a>
+          <a href="ceramica.html">Cerámica</a>
+          <a href="acabados.html" class="active">Acabados</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2>
+          Calculadora de Acabados: Teja Española PVC, Correas G, Canales y
+          Paneles
+        </h2>
+        <p>
+          Calcula la cantidad exacta de tejas, correas tipo G, canales
+          pluviales, pernos con capuchón, planchas WPC o PVC Marmolizado con
+          simulación visual en vivo.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- FORMULARIO DE ENTRADA -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>1. Datos del Proyecto y Material</h2>
+
+          <form
+            id="calc-acabados-form"
+            onsubmit="
+              event.preventDefault();
+              calcularAcabados();
+            "
+          >
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades:</strong></label
+              >
+              <select
+                id="sistema-unidades"
+                onchange="cambiarUnidadesAcabados()"
+              >
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, m²)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, sq ft)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-acabado"
+                >Selecciona el Producto / Acabado:</label
+              >
+              <select id="tipo-acabado" onchange="cambiarFormularioAcabados()">
+                <option value="teja_pvc" selected>
+                  Teja Española de PVC + Estructura Metálica
+                </option>
+                <option value="wpc_panel">
+                  Paneles WPC Acanalados (Paredes Interiores / Exteriores)
+                </option>
+                <option value="pvc_marmol">
+                  Paneles de PVC Marmolizado (1.22 x 2.44 m)
+                </option>
+              </select>
+            </div>
+
+            <!-- OPCIONES ESPECÍFICAS DE TEJA Y ESTRUCTURA G -->
+            <div id="seccion-teja">
+              <div class="form-group">
+                <label for="teja-caidas"
+                  >Tipo de Techo / Número de Caídas:</label
+                >
+                <select id="teja-caidas">
+                  <option value="1">1 Caída (Un solo agua)</option>
+                  <option value="2" selected>
+                    2 Caídas (Dos aguas / Cumbrera central)
+                  </option>
+                  <option value="4">4 Caídas / Múltiples faldas</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="teja-largo-caida" id="label-largo-caida"
+                  >Largo de la Caída / Pendiente (metros):</label
+                >
+                <input
+                  type="number"
+                  id="teja-largo-caida"
+                  step="0.1"
+                  min="0.5"
+                  placeholder="Ej: 3.50 m"
+                  value="3.5"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="teja-ancho-techo" id="label-ancho-techo"
+                  >Ancho Total del Techo / Fachada (metros):</label
+                >
+                <input
+                  type="number"
+                  id="teja-ancho-techo"
+                  step="0.1"
+                  min="0.5"
+                  placeholder="Ej: 8.00 m"
+                  value="8.0"
+                />
+              </div>
+
+              <div
+                class="form-group"
+                style="
+                  background: #eff6ff;
+                  padding: 0.8rem;
+                  border-radius: 6px;
+                  border: 1px solid #bfdbfe;
+                "
+              >
+                <label for="largo-correa-g"
+                  ><strong
+                    >Largo Comercial de Correa G / Perfil C:</strong
+                  ></label
+                >
+                <select id="largo-correa-g">
+                  <option value="6" selected>
+                    Barra de 6.00 metros (Estándar)
+                  </option>
+                  <option value="5">Barra de 5.00 metros</option>
+                  <option value="4">Barra de 4.00 metros</option>
+                  <option value="3">Barra de 3.00 metros</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="largo-canal-agua"
+                  >Largo Comercial de Tramos de Canal Pluvial:</label
+                >
+                <select id="largo-canal-agua">
+                  <option value="3" selected>
+                    Tramos de 3.00 metros (PVC Estándar)
+                  </option>
+                  <option value="4">Tramos de 4.00 metros</option>
+                  <option value="6">
+                    Tramos de 6.00 metros (Metálico Continuo)
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- OPCIONES ESPECÍFICAS DE WPC Y MARMOL -->
+            <div id="seccion-paneles" style="display: none">
+              <div class="form-group">
+                <label for="area-acabado" id="label-area-acabado"
+                  >Área Total a Revestir (m²):</label
+                >
+                <input
+                  type="number"
+                  id="area-acabado"
+                  step="0.1"
+                  min="0.1"
+                  placeholder="Ej: 25.00"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="desperdicio">Desperdicio y Cortes (%):</label>
+              <select id="desperdicio">
+                <option value="0.05" selected>
+                  5% (Instalación recta estándar)
+                </option>
+                <option value="0.08">
+                  8% (Techos inclinados con caídas múltiples)
+                </option>
+                <option value="0.10">10% (Cortes continuos en esquinas)</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              style="
+                width: 100%;
+                cursor: pointer;
+                border: none;
+                font-size: 1rem;
+              "
+            >
+              Calcular Materiales y Ver Simulación
+            </button>
+          </form>
+        </section>
+
+        <!-- RESULTADOS Y SIMULACIÓN VISUAL -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>2. Presupuesto y Esquema Técnico</h2>
+
+          <div
+            id="resultado-box"
+            class="info-box"
+            style="
+              background-color: var(--blanco);
+              border: 1px solid #cbd5e1;
+              text-align: center;
+              padding: 2rem 1rem;
+            "
+          >
+            <p style="color: #64748b">
+              Ingresa las dimensiones y haz clic en
+              <strong>"Calcular Materiales y Ver Simulación"</strong> para ver
+              la gráfica interactiva y el desglose.
+            </p>
+          </div>
+
+          <!-- CONTENEDOR DEL SIMULADOR TÉCNICO VISUAL -->
+          <div
+            id="simulador-container"
+            style="
+              display: none;
+              margin-top: 1.2rem;
+              background: #0f172a;
+              padding: 1rem;
+              border-radius: 8px;
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: #f8fafc; margin-bottom: 0.5rem; font-size: 0.95rem"
+            >
+              Esquema de Instalación (Corte Transversal)
+            </h4>
+            <canvas
+              id="canvas-simulador"
+              width="400"
+              height="200"
+              style="
+                background: #1e293b;
+                border-radius: 6px;
+                max-width: 100%;
+                height: auto;
+              "
+            ></canvas>
+            <p
+              id="leyenda-simulador"
+              style="color: #94a3b8; font-size: 0.78rem; margin-top: 0.5rem"
+            ></p>
+          </div>
+
+          <div
+            id="btn-cotizar-container"
+            style="display: none; margin-top: 1.5rem"
+          >
+            <a
+              id="whatsapp-link"
+              href="#"
+              target="_blank"
+              class="btn-primary"
+              style="
+                background-color: #25d366;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                text-decoration: none;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+                />
+              </svg>
+              Pedir Cotación por WhatsApp
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- GUÍA TÉCNICA E INFORMATIVA -->
+      <section style="margin-top: 2.5rem">
+        <div class="card">
+          <h2>
+            Guía Técnica de Instalación de Teja Española PVC y Estructura
+            Metálica
+          </h2>
+          <p>
+            Criterios de separación para correas tipo G, colocación de canales
+            pluviales y sellado estanco en cubiertas.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              1. Distanciamiento de Correas G y Estructura
+            </h3>
+            <ul
+              style="
+                padding-left: 1.2rem;
+                font-size: 0.9rem;
+                color: #475569;
+                line-height: 1.6;
+              "
+            >
+              <li style="margin-bottom: 0.5rem">
+                <strong>Separación Máxima de Correas:</strong> Para Teja
+                Española de $2.5\text{ mm}$, las correas tipo G deben soldarse o
+                fijarse a máximo <strong>65 cm a 75 cm</strong> de distancia.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Pernos y Capuchones:</strong> Fijar sobre la cresta de
+                la teja con pernos de $2"$ o $2.5"$ autoperforantes con arandela
+                de goma EPDM.
+              </li>
+              <li>
+                <strong>Canales de Lluvia:</strong> Colocar ganchos de soporte
+                para canales cada $60\text{ cm}$ a $80\text{ cm}$ a lo largo de
+                la caída.
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              2. Montaje de Paneles WPC y PVC Marmolizado
+            </h3>
+            <ul
+              style="
+                padding-left: 1.2rem;
+                font-size: 0.9rem;
+                color: #475569;
+                line-height: 1.6;
+              "
+            >
+              <li style="margin-bottom: 0.5rem">
+                <strong>Paneles WPC Acanalados:</strong> Usar binchas invisibles
+                de acero inoxidable (4 binchas por tira de $2.90\text{ m}$).
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>PVC Marmolizado (1.22 x 2.44 m):</strong> Aplicar
+                cordones de sellador/silicón neutro de agarre rápido. 1 tubo
+                rinde para 1.5 a 2 planchas.
+              </li>
+              <li>
+                <strong>Perfiles de Aluminio:</strong> Utilizar perfiles T, L u
+                H para cubrir empalmes y remates de esquina.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT Y DIBUJO DEL SIMULADOR -->
+    <script>
+      function cambiarUnidadesAcabados() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-largo-caida").innerText =
+            "Largo de la Caída / Pendiente (Pies / Feet):";
+          document.getElementById("label-ancho-techo").innerText =
+            "Ancho Total del Techo (Pies / Feet):";
+          document.getElementById("label-area-acabado").innerText =
+            "Área Total a Revestir (Pies² / sq ft):";
+        } else {
+          document.getElementById("label-largo-caida").innerText =
+            "Largo de la Caída / Pendiente (metros):";
+          document.getElementById("label-ancho-techo").innerText =
+            "Ancho Total del Techo (metros):";
+          document.getElementById("label-area-acabado").innerText =
+            "Área Total a Revestir (m²):";
+        }
+      }
+
+      function cambiarFormularioAcabados() {
+        const tipo = document.getElementById("tipo-acabado").value;
+        document.getElementById("seccion-teja").style.display =
+          tipo === "teja_pvc" ? "block" : "none";
+        document.getElementById("seccion-paneles").style.display =
+          tipo === "teja_pvc" ? "none" : "block";
+      }
+
+      function dibujarSimulacionTecho(
+        caidas,
+        numCorreas,
+        largoCaidaM,
+        anchoTechoM,
+        nombreTeja,
+        barrasCorreaG,
+      ) {
+        const canvas = document.getElementById("canvas-simulador");
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Fondo
+        ctx.fillStyle = "#1e293b";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Estructura según número de caídas
+        ctx.lineWidth = 3;
+
+        if (caidas === 1) {
+          // Un solo agua
+          const startX = 50,
+            startY = 150,
+            endX = 350,
+            endY = 70;
+
+          // Viga principal
+          ctx.strokeStyle = "#64748b";
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.stroke();
+
+          // Correas tipo G (líneas amarillas)
+          ctx.strokeStyle = "#eab308";
+          ctx.lineWidth = 4;
+          for (let i = 0; i <= numCorreas; i++) {
+            const ratio = i / numCorreas;
+            const cx = startX + (endX - startX) * ratio;
+            const cy = startY + (endY - startY) * ratio;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          // Teja de PVC (Línea naranja superior)
+          ctx.strokeStyle = "#f97316";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(startX, startY - 8);
+          ctx.lineTo(endX, endY - 8);
+          ctx.stroke();
+
+          // Canal pluvial (Azul al final)
+          ctx.fillStyle = "#3b82f6";
+          ctx.fillRect(startX - 10, startY - 2, 12, 12);
+        } else {
+          // Dos aguas
+          const startX = 40,
+            startY = 150,
+            peakX = 200,
+            peakY = 50,
+            endX = 360,
+            endY = 150;
+
+          // Vigas principales
+          ctx.strokeStyle = "#64748b";
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(peakX, peakY);
+          ctx.lineTo(endX, endY);
+          ctx.stroke();
+
+          // Correas tipo G
+          ctx.strokeStyle = "#eab308";
+          ctx.lineWidth = 4;
+          const correasPorLado = Math.ceil(numCorreas / 2);
+
+          for (let i = 0; i <= correasPorLado; i++) {
+            const ratio = i / correasPorLado;
+            // Izquierda
+            ctx.beginPath();
+            ctx.arc(
+              startX + (peakX - startX) * ratio,
+              startY + (peakY - startY) * ratio,
+              3,
+              0,
+              Math.PI * 2,
+            );
+            ctx.stroke();
+            // Derecha
+            ctx.beginPath();
+            ctx.arc(
+              peakX + (endX - peakX) * ratio,
+              peakY + (endY - peakY) * ratio,
+              3,
+              0,
+              Math.PI * 2,
+            );
+            ctx.stroke();
+          }
+
+          // Teja PVC
+          ctx.strokeStyle = "#f97316";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(startX, startY - 8);
+          ctx.lineTo(peakX, peakY - 8);
+          ctx.lineTo(endX, endY - 8);
+          ctx.stroke();
+
+          // Cumbrera central
+          ctx.fillStyle = "#dc2626";
+          ctx.beginPath();
+          ctx.arc(peakX, peakY - 8, 7, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Canales pluviales en extremos
+          ctx.fillStyle = "#3b82f6";
+          ctx.fillRect(startX - 10, startY - 2, 10, 10);
+          ctx.fillRect(endX, endY - 2, 10, 10);
+        }
+
+        document.getElementById("leyenda-simulador").innerHTML = `
+          <span style="color:#f97316;">■ Teja Española</span> | 
+          <span style="color:#eab308;">● ${numCorreas} Filas de Correas G (${barrasCorreaG} barras)</span> | 
+          <span style="color:#3b82f6;">■ Canales Pluviales</span>
+        `;
+        document.getElementById("simulador-container").style.display = "block";
+      }
+
+      function calcularAcabados() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        const tipoAcabado = document.getElementById("tipo-acabado").value;
+        const desperdicio = parseFloat(
+          document.getElementById("desperdicio").value,
+        );
+
+        const resultadoBox = document.getElementById("resultado-box");
+        resultadoBox.style.backgroundColor = "var(--azul-claro)";
+        resultadoBox.style.textAlign = "left";
+
+        if (tipoAcabado === "teja_pvc") {
+          const caidas = parseInt(document.getElementById("teja-caidas").value);
+          const largoVal = parseFloat(
+            document.getElementById("teja-largo-caida").value,
+          );
+          const anchoVal = parseFloat(
+            document.getElementById("teja-ancho-techo").value,
+          );
+          const largoCorreaGVal = parseFloat(
+            document.getElementById("largo-correa-g").value,
+          );
+          const largoCanalVal = parseFloat(
+            document.getElementById("largo-canal-agua").value,
+          );
+
+          if (
+            isNaN(largoVal) ||
+            isNaN(anchoVal) ||
+            largoVal <= 0 ||
+            anchoVal <= 0
+          ) {
+            alert("Por favor ingresa un largo y ancho válidos para el techo.");
+            return;
+          }
+
+          const largoM = sistema === "imperial" ? largoVal * 0.3048 : largoVal;
+          const anchoM = sistema === "imperial" ? anchoVal * 0.3048 : anchoVal;
+
+          const areaTechoM2 = largoM * anchoM * caidas;
+          const areaConDespM2 = areaTechoM2 * (1 + desperdicio);
+
+          // Cálculo de Tejas
+          const filasTejasAncho = Math.ceil(anchoM / 0.96);
+          let largoTejaRecomendadaM = 3.8;
+          let nombreLargo = "3.80 metros";
+
+          if (largoM <= 2.2) {
+            largoTejaRecomendadaM = 2.3;
+            nombreLargo = "2.30 metros";
+          } else if (largoM <= 2.95) {
+            largoTejaRecomendadaM = 3.05;
+            nombreLargo = "3.05 metros";
+          } else if (largoM <= 3.7) {
+            largoTejaRecomendadaM = 3.8;
+            nombreLargo = "3.80 metros";
+          } else if (largoM <= 5.7) {
+            largoTejaRecomendadaM = 5.8;
+            nombreLargo = "5.80 metros";
+          } else {
+            largoTejaRecomendadaM = 3.05;
+            nombreLargo = "3.05 metros (Traslape)";
+          }
+
+          const piezasPorFila = Math.ceil(
+            largoM / (largoTejaRecomendadaM - 0.15),
+          );
+          const totalTejas = filasTejasAncho * piezasPorFila * caidas;
+
+          // CÁLCULO DE ESTRUCTURA CORREAS TIPO G (Espaciamiento a 0.70m)
+          const lineasCorreasPorCaida = Math.ceil(largoM / 0.7) + 1;
+          const lineasCorreasTotales = lineasCorreasPorCaida * caidas;
+          const metrosLinealesCorreaG = lineasCorreasTotales * anchoM;
+          const barrasCorreaG = Math.ceil(
+            metrosLinealesCorreaG / largoCorreaGVal,
+          );
+
+          // CÁLCULO DE CANALES DE AGUA Y TRAMOS
+          const metrosCanalAgua = anchoM * (caidas === 1 ? 1 : 2);
+          const tramosCanal = Math.ceil(metrosCanalAgua / largoCanalVal);
+
+          // Pernos y Accesorios
+          const pernosCapuchon = Math.ceil(areaConDespM2 * 4.5);
+          const metrosCumbrera = caidas >= 2 ? Math.ceil(anchoM) : 0;
+
+          const areaSqFt = (areaTechoM2 * 10.7639).toFixed(1);
+
+          resultadoBox.innerHTML = `
+            <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+              <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Producto: <strong>Teja Española PVC + Estructura Metálica</strong></p>
+              <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+                Área del Techo: <span style="color: var(--naranja-ferretero);">${areaTechoM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
+              </p>
+            </div>
+
+            <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales y Estructura Requeridos:</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Tejas PVC (Largo ${nombreLargo}):</strong></span>
+                <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${totalTejas} planchas</strong>
+              </li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Correas Tipo G / Perfil C (Barras de ${largoCorreaGVal}m):</strong></span>
+                <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${barrasCorreaG} barras</strong>
+              </li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Pernos Autoperforantes con Capuchón:</strong></span>
+                <strong>${pernosCapuchon} unidades</strong>
+              </li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Canal Pluvial (Tramos de ${largoCanalVal}m):</strong></span>
+                <strong>${tramosCanal} tramos (~${metrosCanalAgua.toFixed(1)} m)</strong>
+              </li>
+              ${
+                metrosCumbrera > 0
+                  ? `
+              <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+                <span><strong>Cumbreras PVC articuladas:</strong></span>
+                <strong>~ ${metrosCumbrera} metros de cumbrera</strong>
+              </li>`
+                  : ""
+              }
+            </ul>
+          `;
+
+          // Generar dibujo en el Simulador
+          dibujarSimulacionTecho(
+            caidas,
+            lineasCorreasTotales,
+            largoM,
+            anchoM,
+            nombreLargo,
+            barrasCorreaG,
+          );
+
+          const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar Teja Española PVC y Estructura:\n\n- Área Techo: ${areaTechoM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Tejas PVC (Largo ${nombreLargo}): ${totalTejas} planchas\n- Correas G (${largoCorreaGVal}m): ${barrasCorreaG} barras\n- Pernos capuchón: ${pernosCapuchon} uds\n- Canales pluviales (${largoCanalVal}m): ${tramosCanal} tramos`;
+          const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
+          document.getElementById("whatsapp-link").href = urlWA;
+        } else if (tipoAcabado === "wpc_panel") {
+          document.getElementById("simulador-container").style.display = "none";
+          const areaVal = parseFloat(
+            document.getElementById("area-acabado").value,
+          );
+          if (isNaN(areaVal) || areaVal <= 0) {
+            alert("Por favor ingresa un área válida.");
+            return;
+          }
+
+          const areaM2 = sistema === "imperial" ? areaVal * 0.092903 : areaVal;
+          const areaConDespM2 = areaM2 * (1 + desperdicio);
+
+          const tirasWPC = Math.ceil(areaConDespM2 / 0.464);
+          const binchasInox = Math.ceil(tirasWPC * 4);
+          const tubosSilicon = Math.ceil(tirasWPC / 3);
+
+          const areaSqFt = (areaM2 * 10.7639).toFixed(1);
+
+          resultadoBox.innerHTML = `
+            <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+              <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Producto: <strong>Paneles WPC Acanalados (2.90 m x 16 cm)</strong></p>
+              <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+                Área a Revestir: <span style="color: var(--naranja-ferretero);">${areaM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
+              </p>
+            </div>
+
+            <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Tiras de Panel WPC (2.90 m):</strong></span>
+                <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${tirasWPC} tiras</strong>
+              </li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Binchas / Grapas Inox de Fijación:</strong></span>
+                <strong>${binchasInox} unidades</strong>
+              </li>
+              <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+                <span><strong>Pegamento Poliuretano / Silicón Neutro:</strong></span>
+                <strong>${tubosSilicon} tubos</strong>
+              </li>
+            </ul>
+          `;
+
+          const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar Panel WPC Acanalado:\n\n- Área: ${areaM2.toFixed(2)} m²\n- Tiras WPC (2.90m): ${tirasWPC} unidades\n- Binchas inox: ${binchasInox} uds\n- Silicón pegamento: ${tubosSilicon} tubos`;
+          const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
+          document.getElementById("whatsapp-link").href = urlWA;
+        } else if (tipoAcabado === "pvc_marmol") {
+          document.getElementById("simulador-container").style.display = "none";
+          const areaVal = parseFloat(
+            document.getElementById("area-acabado").value,
+          );
+          if (isNaN(areaVal) || areaVal <= 0) {
+            alert("Por favor ingresa un área válida.");
+            return;
+          }
+
+          const areaM2 = sistema === "imperial" ? areaVal * 0.092903 : areaVal;
+          const areaConDespM2 = areaM2 * (1 + desperdicio);
+
+          const planchasMarmol = Math.ceil(areaConDespM2 / 2.9768);
+          const tubosSilicon = Math.ceil(planchasMarmol / 1.5);
+          const perfilesT = Math.ceil(planchasMarmol * 0.8);
+
+          const areaSqFt = (areaM2 * 10.7639).toFixed(1);
+
+          resultadoBox.innerHTML = `
+            <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+              <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Producto: <strong>PVC Marmolizado (1.22 m x 2.44 m)</strong></p>
+              <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+                Área a Revestir: <span style="color: var(--naranja-ferretero);">${areaM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
+              </p>
+            </div>
+
+            <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Planchas PVC Marmolizado (1.22 x 2.44 m):</strong></span>
+                <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${planchasMarmol} planchas</strong>
+              </li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                <span><strong>Pegamento Agarre Rápido / Silicón:</strong></span>
+                <strong>${tubosSilicon} tubos</strong>
+              </li>
+              <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+                <span><strong>Perfiles de Unió o Remate de Aluminio:</strong></span>
+                <strong>~ ${perfilesT} perfiles</strong>
+              </li>
+            </ul>
+          `;
+
+          const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar PVC Marmolizado:\n\n- Área: ${areaM2.toFixed(2)} m²\n- Planchas 1.22x2.44m: ${planchasMarmol} planchas\n- Silicón pegamento: ${tubosSilicon} tubos\n- Perfiles aluminio: ${perfilesT} unidades`;
+          const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
+          document.getElementById("whatsapp-link").href = urlWA;
+        }
+
+        document.getElementById("btn-cotizar-container").style.display =
+          "block";
+      }
+    </script>
+  </body>
+</html>

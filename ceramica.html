@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Cerámica y Porcelanato | Ferretería Don Iván</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <header>
+      <div class="header-container">
+        <div class="brand-box">
+          <img
+            src="IMAGENES/LOGO_FERRETERIA.png"
+            alt="Ferretería Don Iván Logo"
+            class="logo-img"
+            onerror="this.src = 'IMAGENES/LOGO_FERRETERIA.jpg'"
+          />
+          <div class="brand-text">
+            <h1>Ferretería <span>Don Iván</span></h1>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
+          </div>
+        </div>
+        <nav>
+          <a href="index.html">Inicio</a>
+          <a href="cemento.html">Losa / Hormigón</a>
+          <a href="bloques.html">Paredes</a>
+          <a href="hierro.html">Hierro</a>
+          <a href="pinturas.html">Pinturas</a>
+          <a href="ceramica.html" class="active">Cerámica</a>
+          <a href="acabados.html">Acabados</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2>
+          Calculadora Técnica de Cerámica, Porcelanato y Mortero de Pegado
+        </h2>
+        <p>
+          Determina la cantidad exacta de metros cuadrados, cajas de
+          cerámica/porcelanato, sacos de Bondex (Estándar, Plus o Premium) y
+          fragua de emboquillado según el formato y tipo de instalación.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- FORMULARIO DE ENTRADA -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>1. Datos de la Superficie y Pieza</h2>
+
+          <form
+            id="calc-ceramica-form"
+            onsubmit="
+              event.preventDefault();
+              calcularCeramica();
+            "
+          >
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades / Región:</strong></label
+              >
+              <select
+                id="sistema-unidades"
+                onchange="cambiarUnidadesCeramica()"
+              >
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, cm, m²)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, Pulgadas, sq ft)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-material"
+                >Tipo de Material / Recubrimiento:</label
+              >
+              <select id="tipo-material" onchange="sugerirPegamento()">
+                <option value="ceramica_estandar" selected>
+                  Cerámica Tradicional (Interior / Pared / Piso)
+                </option>
+                <option value="porcelanato">
+                  Porcelanato (Baja absorción / Gran formato)
+                </option>
+                <option value="piso_sobre_piso">
+                  Revestimiento sobre Piso Existente (Piso sobre Piso)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="formato-pieza">Formato / Medida de la Pieza:</label>
+              <select id="formato-pieza" onchange="evaluarFormatoCustom()">
+                <option value="30x30">30 x 30 cm (12" x 12")</option>
+                <option value="40x40">40 x 40 cm (16" x 16")</option>
+                <option value="45x45" selected>45 x 45 cm (18" x 18")</option>
+                <option value="60x60">
+                  60 x 60 cm (24" x 24") - Porcelanato
+                </option>
+                <option value="60x120">
+                  60 x 120 cm (24" x 48") - Formato Grande
+                </option>
+                <option value="custom">
+                  -- Ingresar Medida Personalizada --
+                </option>
+              </select>
+            </div>
+
+            <!-- CAMPOS PARA FORMATO PERSONALIZADO -->
+            <div
+              id="campos-formato-custom"
+              style="
+                display: none;
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                margin-bottom: 1rem;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <div class="form-group">
+                <label for="custom-ancho-pieza" id="label-cust-ancho-p"
+                  >Ancho de la pieza (cm):</label
+                >
+                <input
+                  type="number"
+                  id="custom-ancho-pieza"
+                  step="0.1"
+                  placeholder="Ej: 20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="custom-largo-pieza" id="label-cust-largo-p"
+                  >Largo de la pieza (cm):</label
+                >
+                <input
+                  type="number"
+                  id="custom-largo-pieza"
+                  step="0.1"
+                  placeholder="Ej: 120"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-pegamento"
+                >Tipo de Pegamento / Bondex Recomendado:</label
+              >
+              <select id="tipo-pegamento">
+                <option value="bondex_estandar" selected>
+                  Bondex Estándar Gris/Blanco (Cerámica interior)
+                </option>
+                <option value="bondex_plus">
+                  Bondex Plus / Interiores-Exteriores (Humedad / Tráfico alto)
+                </option>
+                <option value="bondex_premium">
+                  Bondex Premium / Porcelanato (Alta flexibilidad)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="m2-caja" id="label-m2-caja"
+                >Rendimiento por Caja (m² / caja):</label
+              >
+              <input
+                type="number"
+                id="m2-caja"
+                step="0.01"
+                min="0.1"
+                value="2.00"
+                placeholder="Ej: 2.00 m² (Ver en la caja)"
+              />
+              <small style="color: #64748b; font-size: 0.78rem"
+                >Revisa el empaque de la cerámica. Promedio general: 1.5 a 2.2
+                m².</small
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-instalacion"
+                >Patrón de Instalación / Cortes:</label
+              >
+              <select id="tipo-instalacion">
+                <option value="0.08" selected>
+                  Instalación Recta Tradicional (8% desperdicio)
+                </option>
+                <option value="0.12">
+                  Instalación en Diagonal / Espina de Pescado (12% desperdicio)
+                </option>
+                <option value="0.05">
+                  Área Rectangular Simple sin muchos recortes (5% desperdicio)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="area-total" id="label-area-tot"
+                >Área Total a Cubrir (m²):</label
+              >
+              <input
+                type="number"
+                id="area-total"
+                step="0.1"
+                min="0.1"
+                placeholder="Ej: 45.00"
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              style="
+                width: 100%;
+                cursor: pointer;
+                border: none;
+                font-size: 1rem;
+              "
+            >
+              Calcular Cerámica y Materiales
+            </button>
+          </form>
+        </section>
+
+        <!-- RESULTADOS DE CÁLCULO -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>2. Presupuesto de Materiales</h2>
+
+          <div
+            id="resultado-box"
+            class="info-box"
+            style="
+              background-color: var(--blanco);
+              border: 1px solid #cbd5e1;
+              text-align: center;
+              padding: 2rem 1rem;
+            "
+          >
+            <p style="color: #64748b">
+              Ingresa el área a cubrir y haz clic en
+              <strong>"Calcular Cerámica y Materiales"</strong> para obtener la
+              estimación.
+            </p>
+          </div>
+
+          <div
+            id="btn-cotizar-container"
+            style="display: none; margin-top: 1.5rem"
+          >
+            <a
+              id="whatsapp-link"
+              href="#"
+              target="_blank"
+              class="btn-primary"
+              style="
+                background-color: #25d366;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                text-decoration: none;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+                />
+              </svg>
+              Pedir Cotación por WhatsApp
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- GUÍA TÉCNICA E INFORMATIVA -->
+      <section style="margin-top: 2.5rem">
+        <div class="card">
+          <h2>Guía Técnica de Elección de Pegamento (Bondex) y Colocación</h2>
+          <p>
+            Garantiza una adherencia perfecta seleccionando el mortero adhesivo
+            correcto según la porosidad de la pieza y la zona de instalación.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              1. Tipos de Mortero Adhesivo (Bondex / Pego)
+            </h3>
+            <ul
+              style="
+                padding-left: 1.2rem;
+                font-size: 0.9rem;
+                color: #475569;
+                line-height: 1.6;
+              "
+            >
+              <li style="margin-bottom: 0.5rem">
+                <strong>Bondex Estándar (Gris / Blanco):</strong> Ideal para
+                piezas cerámicas tradicionales de alta absorción en pisos y
+                paredes de espacios interiores secos.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Bondex Plus / Multiuso:</strong> Diseñado para áreas
+                húmedas (baños, cocinas, fachadas exteriores) o piezas con baja
+                absorción.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Bondex Premium / Porcelanato:</strong> Con aditivo
+                polimérico de alta flexibilidad. Requerido para Porcelanatos,
+                grandes formatos ($60 \times 60\text{ cm}$ en adelante) y
+                colocación Piso sobre Piso.
+              </li>
+              <li>
+                <strong>Fragua / Porcelanizador:</strong> Se calcula
+                aproximadamente $1\text{ kg}$ de fragua por cada $8\text{ m}^2$
+                a $10\text{ m}^2$ para juntas de $2\text{ mm}$ a $3\text{ mm}$.
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              2. Rendimiento Promedio de Mortero por Saco (25 kg)
+            </h3>
+            <table
+              style="
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.88rem;
+                text-align: left;
+              "
+            >
+              <thead>
+                <tr style="background-color: var(--azul-marino); color: white">
+                  <th style="padding: 0.6rem">Formato de Pieza</th>
+                  <th style="padding: 0.6rem">Llana Dentada</th>
+                  <th style="padding: 0.6rem">Rendimiento / Saco (25kg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Pared / Mosaico (&lt; 30x30 cm)</strong>
+                  </td>
+                  <td style="padding: 0.6rem">6 mm (1/4 in)</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    ~ 5.5 a 6.0 m²
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Piso Estándar (30x30 a 45x45)</strong>
+                  </td>
+                  <td style="padding: 0.6rem">8 mm (5/16 in)</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    ~ 4.5 a 5.0 m²
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.6rem">
+                    <strong>Porcelanato / Grande (&gt; 60x60)</strong>
+                  </td>
+                  <td style="padding: 0.6rem">10mm + Doble Encolado</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    ~ 3.0 a 3.5 m²
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT DE CÁLCULO -->
+    <script>
+      function cambiarUnidadesCeramica() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-area-tot").innerText =
+            "Área Total a Cubrir (Pies² / sq ft):";
+          document.getElementById("label-m2-caja").innerText =
+            "Rendimiento por Caja (sq ft / caja):";
+          document.getElementById("label-cust-ancho-p").innerText =
+            "Ancho de la pieza (Pulgadas / in):";
+          document.getElementById("label-cust-largo-p").innerText =
+            "Largo de la pieza (Pulgadas / in):";
+        } else {
+          document.getElementById("label-area-tot").innerText =
+            "Área Total a Cubrir (m²):";
+          document.getElementById("label-m2-caja").innerText =
+            "Rendimiento por Caja (m² / caja):";
+          document.getElementById("label-cust-ancho-p").innerText =
+            "Ancho de la pieza (cm):";
+          document.getElementById("label-cust-largo-p").innerText =
+            "Largo de la pieza (cm):";
+        }
+      }
+
+      function sugerirPegamento() {
+        const material = document.getElementById("tipo-material").value;
+        const pegamentoSelect = document.getElementById("tipo-pegamento");
+
+        if (material === "porcelanato") {
+          pegamentoSelect.value = "bondex_premium";
+        } else if (material === "piso_sobre_piso") {
+          pegamentoSelect.value = "bondex_premium";
+        } else {
+          pegamentoSelect.value = "bondex_estandar";
+        }
+      }
+
+      function evaluarFormatoCustom() {
+        const formato = document.getElementById("formato-pieza").value;
+        const customDiv = document.getElementById("campos-formato-custom");
+        customDiv.style.display = formato === "custom" ? "block" : "none";
+      }
+
+      function calcularCeramica() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        const material = document.getElementById("tipo-material").value;
+        const formato = document.getElementById("formato-pieza").value;
+        const tipoPegamento = document.getElementById("tipo-pegamento").value;
+        const desperdicioPct = parseFloat(
+          document.getElementById("tipo-instalacion").value,
+        );
+        const areaInput = parseFloat(
+          document.getElementById("area-total").value,
+        );
+        const m2CajaInput = parseFloat(
+          document.getElementById("m2-caja").value,
+        );
+
+        if (isNaN(areaInput) || areaInput <= 0) {
+          alert("Por favor ingresa un área total válida.");
+          return;
+        }
+
+        if (isNaN(m2CajaInput) || m2CajaInput <= 0) {
+          alert("Por favor ingresa el rendimiento por caja.");
+          return;
+        }
+
+        // Conversión a metros cuadrados
+        const areaM2 =
+          sistema === "imperial" ? areaInput * 0.092903 : areaInput;
+        const m2PorCaja =
+          sistema === "imperial" ? m2CajaInput * 0.092903 : m2CajaInput;
+
+        // Dimensiones de la pieza en cm
+        let anchoCm = 45;
+        let largoCm = 45;
+        let nombreFormato = "45 x 45 cm";
+
+        if (formato === "30x30") {
+          anchoCm = 30;
+          largoCm = 30;
+          nombreFormato = "30 x 30 cm (12x12 in)";
+        } else if (formato === "40x40") {
+          anchoCm = 40;
+          largoCm = 40;
+          nombreFormato = "40 x 40 cm (16x16 in)";
+        } else if (formato === "45x45") {
+          anchoCm = 45;
+          largoCm = 45;
+          nombreFormato = "45 x 45 cm (18x18 in)";
+        } else if (formato === "60x60") {
+          anchoCm = 60;
+          largoCm = 60;
+          nombreFormato = "60 x 60 cm (24x24 in)";
+        } else if (formato === "60x120") {
+          anchoCm = 60;
+          largoCm = 120;
+          nombreFormato = "60 x 120 cm (24x48 in)";
+        } else if (formato === "custom") {
+          const custAncho = parseFloat(
+            document.getElementById("custom-ancho-pieza").value,
+          );
+          const custLargo = parseFloat(
+            document.getElementById("custom-largo-pieza").value,
+          );
+
+          if (
+            isNaN(custAncho) ||
+            isNaN(custLargo) ||
+            custAncho <= 0 ||
+            custLargo <= 0
+          ) {
+            alert(
+              "Por favor ingresa las dimensiones de la pieza personalizada.",
+            );
+            return;
+          }
+
+          anchoCm = sistema === "imperial" ? custAncho * 2.54 : custAncho;
+          largoCm = sistema === "imperial" ? custLargo * 2.54 : custLargo;
+          nombreFormato = `Personalizado (${anchoCm.toFixed(0)} x ${largoCm.toFixed(0)} cm)`;
+        }
+
+        // Área total con desperdicio
+        const areaTotalConDesperdicioM2 = areaM2 * (1 + desperdicioPct);
+
+        // Número de cajas requeridas
+        const cajasNecesarias = Math.ceil(
+          areaTotalConDesperdicioM2 / m2PorCaja,
+        );
+
+        // Cálculo de Piezas Individuales
+        const areaUnaPiezaM2 = (anchoCm / 100) * (largoCm / 100);
+        const piezasTotalesEstimadas = Math.ceil(
+          areaTotalConDesperdicioM2 / areaUnaPiezaM2,
+        );
+
+        // Rendimiento de pegamento por saco (25kg)
+        let m2PorSacoPegamento = 4.5;
+        let nombrePego = "Bondex Estándar Gris/Blanco (25 kg)";
+
+        if (tipoPegamento === "bondex_plus") {
+          nombrePego = "Bondex Plus Interiores/Exteriores (25 kg)";
+        } else if (tipoPegamento === "bondex_premium") {
+          nombrePego = "Bondex Premium Porcelanato / Piso sobre Piso (25 kg)";
+        }
+
+        if (anchoCm >= 60 || largoCm >= 60 || material === "porcelanato") {
+          m2PorSacoPegamento = 3.5; // Doble encolado / llana dentada grande
+        }
+
+        const sacosPegamento = Math.ceil(
+          areaTotalConDesperdicioM2 / m2PorSacoPegamento,
+        );
+        const kilosFragua = Math.ceil(areaTotalConDesperdicioM2 / 9); // ~1kg de fragua por cada 9m2
+
+        const areaSqFt = (areaM2 * 10.7639).toFixed(1);
+
+        const resultadoBox = document.getElementById("resultado-box");
+        resultadoBox.style.backgroundColor = "var(--azul-claro)";
+        resultadoBox.style.textAlign = "left";
+
+        resultadoBox.innerHTML = `
+        <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Formato: <strong>${nombreFormato}</strong> (${desperdicioPct * 100}% desperdicio incluido)</p>
+          <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+            Área Útil: <span style="color: var(--naranja-ferretero);">${areaM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
+          </p>
+        </div>
+
+        <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Cajas de Cerámica / Porcelanato:</strong></span>
+            <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${cajasNecesarias} Cajas</strong>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Piezas Sueltas Totales Aprox.:</strong></span>
+            <strong>~ ${piezasTotalesEstimadas} piezas</strong>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Sacos de Pegamento (25 kg):</strong></span>
+            <strong>${sacosPegamento} sacos de ${nombrePego}</strong>
+          </li>
+          <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+            <span><strong>Fragua / Porcelanizador Aprox.:</strong></span>
+            <strong>${kilosFragua} kg</strong>
+          </li>
+        </ul>
+      `;
+
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar cerámica/porcelanato:\n\n- Formato: ${nombreFormato}\n- Área a cubrir: ${areaM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Cajas necesarias: ${cajasNecesarias} Cajas (${m2PorCaja.toFixed(2)}m²/caja)\n- Pegamento recomendado: ${sacosPegamento} sacos de ${nombrePego}\n- Fragua: ${kilosFragua} kg`;
+        const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
+
+        document.getElementById("whatsapp-link").href = urlWA;
+        document.getElementById("btn-cotizar-container").style.display =
+          "block";
+      }
+    </script>
+  </body>
+</html>

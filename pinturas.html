@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Calculadora de Pinturas e Impermeabilizantes | Ferretería Don Iván
+    </title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <header>
+      <div class="header-container">
+        <div class="brand-box">
+          <img
+            src="IMAGENES/LOGO_FERRETERIA.png"
+            alt="Ferretería Don Iván Logo"
+            class="logo-img"
+            onerror="this.src = 'IMAGENES/LOGO_FERRETERIA.jpg'"
+          />
+          <div class="brand-text">
+            <h1>Ferretería <span>Don Iván</span></h1>
+            <p>
+              Calculadoras técnicas y presupuestos para tu obra en Ecuador e
+              Internacional
+            </p>
+          </div>
+        </div>
+        <nav>
+          <a href="index.html">Inicio</a>
+          <a href="cemento.html">Losa / Hormigón</a>
+          <a href="bloques.html">Paredes</a>
+          <a href="hierro.html">Hierro</a>
+          <a href="pinturas.html" class="active">Pinturas</a>
+          <a href="ceramica.html">Cerámica</a>
+          <a href="acabados.html">Acabados</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2>Calculadora Técnica de Pintura, Empaste e Impermeabilizantes</h2>
+        <p>
+          Determina la cantidad exacta de canecas, galones o litros de pintura
+          (Látex, Esmalte, Epóxica e Impermeabilizantes), tipo de diluyente
+          requerido y número de manos según la superficie.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- FORMULARIO DE ENTRADA -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>1. Datos de la Superficie</h2>
+
+          <form
+            id="calc-pintura-form"
+            onsubmit="
+              event.preventDefault();
+              calcularPintura();
+            "
+          >
+            <div
+              class="form-group"
+              style="
+                background: #f8fafc;
+                padding: 0.8rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+              "
+            >
+              <label for="sistema-unidades"
+                ><strong>Sistema de Unidades / Región:</strong></label
+              >
+              <select id="sistema-unidades" onchange="cambiarUnidadesPintura()">
+                <option value="metrico" selected>
+                  Sistema Métrico (Metros, m²)
+                </option>
+                <option value="imperial">
+                  Sistema Imperial (Pies / Feet, sq ft)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-pintura">Tipo de Recubrimiento / Pintura:</label>
+              <select id="tipo-pintura">
+                <option value="latex_int">
+                  Látex Interior (Paredes / Tumbados)
+                </option>
+                <option value="latex_ext">
+                  Látex Exterior Superlavable / Acrílica
+                </option>
+                <option value="esmalte">
+                  Esmalte Sintético / Anticorrosivo (Metal / Madera)
+                </option>
+                <option value="impermeabilizante">
+                  Impermeabilizante Acrílico para Techos/Terrazas
+                </option>
+                <option value="epoxica">
+                  Pintura Epóxica (Pisos / Zonas Industriales)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="metodo-aplicacion">Método de Aplicación:</label>
+              <select id="metodo-aplicacion">
+                <option value="rodillo" selected>
+                  Rodillo / Brocha (Estándar residencial)
+                </option>
+                <option value="pistola">
+                  Pistola / Compresor de Aire (Rinde ~10% más pero requiere más
+                  dilución)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="estado-superficie">Estado de la Superficie:</label>
+              <select id="estado-superficie">
+                <option value="empastada" selected>
+                  Pared Empastada / Ya Pintada (Superficie Lisa)
+                </option>
+                <option value="enlucido_nuevo">
+                  Enlucido Nuevo / Hormigón Poroso (Absorbe más)
+                </option>
+                <option value="metal_madera">
+                  Metal Limpio / Madera Tratada
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="num-manos"
+                >Número de Manos / Capas Recomendadas:</label
+              >
+              <select id="num-manos">
+                <option value="2" selected>
+                  2 Manos (Recomendado estándar)
+                </option>
+                <option value="3">
+                  3 Manos (Colores oscuros o superficie porosa/exterior)
+                </option>
+                <option value="1">1 Mano (Retoque ligero)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="area-pintar" id="label-area"
+                >Área Total a Pintar (m²):</label
+              >
+              <input
+                type="number"
+                id="area-pintar"
+                step="0.1"
+                min="0.1"
+                placeholder="Ej: 80.00"
+              />
+              <small style="color: #64748b; font-size: 0.78rem"
+                >Suma el área de todas las paredes a pintar.</small
+              >
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              style="
+                width: 100%;
+                cursor: pointer;
+                border: none;
+                font-size: 1rem;
+              "
+            >
+              Calcular Pintura y Mezcla
+            </button>
+          </form>
+        </section>
+
+        <!-- RESULTADOS DE CÁLCULO -->
+        <section class="card" style="margin-bottom: 0">
+          <h2>2. Presupuesto de Recubrimiento</h2>
+
+          <div
+            id="resultado-box"
+            class="info-box"
+            style="
+              background-color: var(--blanco);
+              border: 1px solid #cbd5e1;
+              text-align: center;
+              padding: 2rem 1rem;
+            "
+          >
+            <p style="color: #64748b">
+              Ingresa los metros cuadrados y haz clic en
+              <strong>"Calcular Pintura y Mezcla"</strong> para ver la cantidad
+              por galones, canecas y litros.
+            </p>
+          </div>
+
+          <div
+            id="btn-cotizar-container"
+            style="display: none; margin-top: 1.5rem"
+          >
+            <a
+              id="whatsapp-link"
+              href="#"
+              target="_blank"
+              class="btn-primary"
+              style="
+                background-color: #25d366;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                text-decoration: none;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+                />
+              </svg>
+              Pedir Cotación por WhatsApp
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- GUÍA TÉCNICA E INFORMATIVA -->
+      <section style="margin-top: 2.5rem">
+        <div class="card">
+          <h2>Guía Técnica de Dilución y Aplicación de Pinturas</h2>
+          <p>
+            Instrucciones para mezclar cada tipo de pintura con el solvente
+            adecuado y garantizar un acabado duradero sin desprendimientos.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              1. Proporciones de Mezcla y Solventes
+            </h3>
+            <ul
+              style="
+                padding-left: 1.2rem;
+                font-size: 0.9rem;
+                color: #475569;
+                line-height: 1.6;
+              "
+            >
+              <li style="margin-bottom: 0.5rem">
+                <strong>Pinturas de Látex / Acrílicas:</strong> Se diluyen con
+                <strong>Agua Limpia</strong>. Mezclar entre un 10% y 15% de agua
+                por galón (aprox. 1 a 2 vasos por galón).
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Esmaltes y Anticorrosivos:</strong> Se diluyen con
+                <strong>Thinner o Aguarrás</strong>. Para brocha/rodillo agregar
+                10%. Para aplicación con pistola agregar del 20% al 25% para
+                lograr fluidez.
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <strong>Impermeabilizantes:</strong> Aplicar la 1ra mano diluida
+                al 20% con agua para penetración como sellador; la 2da y 3ra
+                mano aplicarlas puras sin diluir.
+              </li>
+              <li>
+                <strong>Pintura Epóxica:</strong> Mezclar la Resina (Componente
+                A) con el Catalizador (Componente B) en proporción exacta del
+                fabricante y aplicar antes de 45 minutos.
+              </li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
+              2. Tabla de Rendimientos por Presentación (a 2 Manos)
+            </h3>
+            <table
+              style="
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.88rem;
+                text-align: left;
+              "
+            >
+              <thead>
+                <tr style="background-color: var(--azul-marino); color: white">
+                  <th style="padding: 0.6rem">Tipo de Pintura</th>
+                  <th style="padding: 0.6rem">Litro / Cuertero</th>
+                  <th style="padding: 0.6rem">Galón (3.78L)</th>
+                  <th style="padding: 0.6rem">Caneca (5 Gal)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Látex Pared Empastada</strong>
+                  </td>
+                  <td style="padding: 0.6rem">6 - 7.5 m²</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    25 - 30 m²
+                  </td>
+                  <td style="padding: 0.6rem; font-weight: bold">
+                    125 - 150 m²
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0">
+                  <td style="padding: 0.6rem">
+                    <strong>Esmalte sobre Metal</strong>
+                  </td>
+                  <td style="padding: 0.6rem">5 - 6 m²</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    20 - 25 m²
+                  </td>
+                  <td style="padding: 0.6rem; font-weight: bold">
+                    100 - 125 m²
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.6rem">
+                    <strong>Impermeabilizante Techos</strong>
+                  </td>
+                  <td style="padding: 0.6rem">2 - 2.5 m²</td>
+                  <td
+                    style="
+                      padding: 0.6rem;
+                      color: var(--naranja-ferretero);
+                      font-weight: bold;
+                    "
+                  >
+                    8 - 10 m²
+                  </td>
+                  <td style="padding: 0.6rem; font-weight: bold">40 - 50 m²</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT DE CÁLCULO -->
+    <script>
+      function cambiarUnidadesPintura() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        if (sistema === "imperial") {
+          document.getElementById("label-area").innerText =
+            "Área Total a Pintar (Pies² / sq ft):";
+        } else {
+          document.getElementById("label-area").innerText =
+            "Área Total a Pintar (m²):";
+        }
+      }
+
+      function calcularPintura() {
+        const sistema = document.getElementById("sistema-unidades").value;
+        const tipoPintura = document.getElementById("tipo-pintura").value;
+        const metodo = document.getElementById("metodo-aplicacion").value;
+        const estado = document.getElementById("estado-superficie").value;
+        const manos = parseInt(document.getElementById("num-manos").value);
+        const areaInput = parseFloat(
+          document.getElementById("area-pintar").value,
+        );
+
+        if (isNaN(areaInput) || areaInput <= 0) {
+          alert("Por favor ingresa un área válida.");
+          return;
+        }
+
+        // Conversión a metros cuadrados
+        const areaM2 =
+          sistema === "imperial" ? areaInput * 0.092903 : areaInput;
+
+        // Rendimiento base por galón a 1 mano en m²
+        let rendimientoGalon1Mano = 50;
+        let diluyenteInfo = "Agua limpia (10% a 15%)";
+        let nombrePintura = "Látex Interior";
+
+        if (tipoPintura === "latex_int") {
+          rendimientoGalon1Mano = 50;
+          diluyenteInfo = "Agua limpia (10% a 15% por galón)";
+          nombrePintura = "Látex Interior";
+        } else if (tipoPintura === "latex_ext") {
+          rendimientoGalon1Mano = 45;
+          diluyenteInfo = "Agua limpia (10% por galón)";
+          nombrePintura = "Látex Exterior Acrílico";
+        } else if (tipoPintura === "esmalte") {
+          rendimientoGalon1Mano = 40;
+          diluyenteInfo = "Thinner o Aguarrás (10% brocha / 20% pistola)";
+          nombrePintura = "Esmalte Sintético / Anticorrosivo";
+        } else if (tipoPintura === "impermeabilizante") {
+          rendimientoGalon1Mano = 18;
+          diluyenteInfo = "1ra mano 20% agua; manos siguientes puras";
+          nombrePintura = "Impermeabilizante Acrílico para Techos";
+        } else if (tipoPintura === "epoxica") {
+          rendimientoGalon1Mano = 30;
+          diluyenteInfo = "Catalizador Epóxico (Componentes A + B)";
+          nombrePintura = "Pintura Epóxica Industrial";
+        }
+
+        // Ajustes por estado de superficie
+        if (estado === "enlucido_nuevo") {
+          rendimientoGalon1Mano *= 0.8; // Absorbe un 20% más
+        }
+
+        // Ajustes por aplicación con pistola
+        if (metodo === "pistola") {
+          rendimientoGalon1Mano *= 1.1; // Rinde 10% más por pulverización
+        }
+
+        // Rendimiento efectivo por galón considerando el número de manos
+        const rendimientoEfectivoGalon = rendimientoGalon1Mano / manos;
+        const galonesNecesarios = areaM2 / rendimientoEfectivoGalon;
+
+        // Desglose de envases comerciales (Canecas de 5 gal, Galones y Litros/Cuerteros)
+        const canecas = Math.floor(galonesNecesarios / 5);
+        const galonesRestantes = galonesNecesarios % 5;
+        let galonesCompletos = Math.floor(galonesRestantes);
+        let litrosRestantes = Math.ceil(
+          (galonesRestantes - galonesCompletos) * 3.785,
+        );
+
+        if (litrosRestantes >= 4) {
+          galonesCompletos += 1;
+          litrosRestantes = 0;
+        }
+
+        let resumenEnvases = [];
+        if (canecas > 0)
+          resumenEnvases.push(`<strong>${canecas} Caneca(s)</strong> (5 Gal)`);
+        if (galonesCompletos > 0)
+          resumenEnvases.push(`<strong>${galonesCompletos} Galón(es)</strong>`);
+        if (litrosRestantes > 0)
+          resumenEnvases.push(
+            `<strong>${litrosRestantes} Litro(s) / Cuertero(s)</strong>`,
+          );
+
+        if (resumenEnvases.length === 0)
+          resumenEnvases.push("<strong>1 Galón</strong>");
+
+        const areaSqFt = (areaM2 * 10.7639).toFixed(1);
+
+        const resultadoBox = document.getElementById("resultado-box");
+        resultadoBox.style.backgroundColor = "var(--azul-claro)";
+        resultadoBox.style.textAlign = "left";
+
+        resultadoBox.innerHTML = `
+        <div style="border-bottom: 2px solid #cbd5e1; padding-bottom: 0.8rem; margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.2rem;">Recubrimiento: <strong>${nombrePintura}</strong> (${manos} manos)</p>
+          <p style="font-size: 1.1rem; color: var(--azul-marino); font-weight: bold;">
+            Área a Pintar: <span style="color: var(--naranja-ferretero);">${areaM2.toFixed(2)} m²</span> / <span>${areaSqFt} sq ft</span>
+          </p>
+        </div>
+
+        <h4 style="color: var(--azul-marino); margin-bottom: 0.8rem;">Materiales Requeridos:</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Total Galones Estimados:</strong></span>
+            <strong style="color: var(--naranja-ferretero); font-size: 1.1rem;">${galonesNecesarios.toFixed(2)} Galones</strong>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+            <span><strong>Presentación Recomendada:</strong></span>
+            <span>${resumenEnvases.join(" + ")}</span>
+          </li>
+          <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
+            <span><strong>Diluyente Requerido:</strong></span>
+            <strong>${diluyenteInfo}</strong>
+          </li>
+        </ul>
+      `;
+
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar pintura:\n\n- Tipo: ${nombrePintura}\n- Área: ${areaM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Manos: ${manos}\n- Total Galones: ${galonesNecesarios.toFixed(2)} gal\n- Envases recomendados: ${resumenEnvases.join(" + ")}`;
+        const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
+
+        document.getElementById("whatsapp-link").href = urlWA;
+        document.getElementById("btn-cotizar-container").style.display =
+          "block";
+      }
+    </script>
+  </body>
+</html>
