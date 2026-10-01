@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de Hormigón y Dosificación | Ferretería Don Iván</title>
+    <meta
+      name="description"
+      content="Calcula gratis sacos de cemento, arena, ripio y agua para losas, columnas, plintas y contrapisos en Ecuador. Sistema métrico e imperial."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -99,17 +103,53 @@
               <label for="tipo-obra">Tipo de Estructura / Elemento:</label>
               <select id="tipo-obra" onchange="cambiarTipoEstructura()">
                 <option value="losa">
-                  Losa / Techo / Plinta / Cimentación (f'c = 210 kg/cm² / 3000
-                  PSI)
+                  Losa / Techo (f'c = 210 kg/cm² / 3000 PSI)
                 </option>
                 <option value="columnas">
-                  Columnas o Vigas Estructurales (f'c = 210 kg/cm² / 3000 PSI)
+                  Vigas o Columnas Estructurales (f'c = 210 kg/cm² / 3000 PSI)
+                </option>
+                <option value="plinta">
+                  Plintas / Cimentación (f'c = 180 kg/cm² / 2500 PSI)
                 </option>
                 <option value="contrapiso">
                   Contrapiso / Acera / Peatonal (f'c = 150 kg/cm² / 2000 PSI)
                 </option>
               </select>
             </div>
+
+            <div
+              style="
+                background: #f8fafc;
+                padding: 0.8rem 1rem;
+                border-radius: 6px;
+                border: 1px dashed #cbd5e1;
+                font-size: 0.82rem;
+                color: #475569;
+                margin-top: -0.6rem;
+              "
+            >
+              <strong style="color: var(--azul-marino)"
+                >¿Qué significa cada tipo?</strong
+              >
+              <ul style="margin: 0.4rem 0 0 1.1rem; line-height: 1.5">
+                <li>
+                  <strong>Losa / Techo:</strong> piso de una segunda planta o
+                  cubierta plana de hormigón.
+                </li>
+                <li>
+                  <strong>Vigas o Columnas:</strong> elementos verticales
+                  (columnas) u horizontales (vigas) que soportan la
+                  estructura.
+                </li>
+                <li>
+                  <strong>Plintas / Cimentación:</strong> base bajo tierra
+                  que sostiene columnas y transmite el peso al suelo.
+                </li>
+                <li>
+                  <strong>Contrapiso / Acera:</strong> piso a nivel de
+                  tierra, patios, veredas o zonas peatonales.
+                </li>
+              </ul>
 
             <!-- CAMPOS PARA LOSA O CONTRAPISO -->
             <div id="campos-area">
@@ -146,7 +186,7 @@
                 <input
                   type="number"
                   id="espesor"
-                  step="0.5"
+                  step="0.1"
                   min="0.1"
                   placeholder="Ej: 12 cm"
                 />
@@ -237,6 +277,17 @@
           <h2>2. Presupuesto de Materiales</h2>
 
           <div
+            id="diagrama-box"
+            style="text-align: center; margin-bottom: 1rem; display: none"
+          >
+            <svg
+              id="svg-diagrama"
+              viewBox="0 0 300 180"
+              style="max-width: 260px; width: 100%"
+            ></svg>
+          </div>
+
+          <div
             id="resultado-box"
             class="info-box"
             style="
@@ -252,6 +303,18 @@
               detallada.
             </p>
           </div>
+
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial basado en normas ACI/NEC. No reemplaza el
+            diseño de un ingeniero civil.
+          </p>
 
           <div
             id="btn-cotizar-container"
@@ -373,8 +436,8 @@
                 la resistencia requerida.
               </li>
               <li style="margin-bottom: 0.5rem">
-                <strong>Conversión Imperial:</strong> 1 yarda cúbica ($yd^3$)
-                equivale a $0.764\text{ m}^3$ o $27\text{ ft}^3$.
+                <strong>Conversión Imperial:</strong> 1 yarda cúbica (yd³)
+                equivale a 0.764 m³ o 27 ft³.
               </li>
               <li>
                 <strong>Curado Obligatorio:</strong> Mantener húmedo el elemento
@@ -537,20 +600,23 @@
         const volumenYARDAS = (volumenTotalM3 * 1.30795).toFixed(2);
         const volumenPIES3 = (volumenTotalM3 * 35.3147).toFixed(1);
 
-        // Sacos por m3 base para 50kg
-        let sacosPorM3_50kg = 7.5;
-        let f210 = "210 kg/cm² (3000 PSI)";
+        // Dosificación según tabla técnica (ACI/NEC): sacos/m³ (50kg), f'c y proporción cemento:arena:ripio
+        const dosificacion = {
+          losa:       { sacos: 7.75, resistencia: "210 kg/cm² (3000 PSI)", propArena: 2,   propRipio: 3 },
+          columnas:   { sacos: 7.75, resistencia: "210 kg/cm² (3000 PSI)", propArena: 2,   propRipio: 3 },
+          plinta:     { sacos: 6.75, resistencia: "180 kg/cm² (2500 PSI)", propArena: 2.5, propRipio: 3.5 },
+          contrapiso: { sacos: 5.75, resistencia: "150 kg/cm² (2000 PSI)", propArena: 2.5, propRipio: 4 },
+        };
+        const d = dosificacion[tipoObra];
+        const sacosPorM3_50kg = d.sacos;
+        const f210 = d.resistencia;
 
-        if (tipoObra === "contrapiso") {
-          sacosPorM3_50kg = 6.0;
-          f210 = "150 kg/cm² (2000 PSI)";
-        }
-
+        // Arena y ripio escalados a la proporción real de cada mezcla (base 1:2:3 = 0.55 / 0.82 m³ por m³ de hormigón)
         const kilosCementoTotales = volumenTotalM3 * sacosPorM3_50kg * 50;
         const sacosCemento = Math.ceil(kilosCementoTotales / pesoSacoConfig);
 
-        const m3Arena = (volumenTotalM3 * 0.55).toFixed(2);
-        const m3Ripio = (volumenTotalM3 * 0.82).toFixed(2);
+        const m3Arena = (volumenTotalM3 * 0.55 * (d.propArena / 2)).toFixed(2);
+        const m3Ripio = (volumenTotalM3 * 0.82 * (d.propRipio / 3)).toFixed(2);
         const litrosAgua = Math.round(volumenTotalM3 * 185);
 
         const resultadoBox = document.getElementById("resultado-box");
@@ -593,6 +659,37 @@
         document.getElementById("whatsapp-link").href = urlWA;
         document.getElementById("btn-cotizar-container").style.display =
           "block";
+
+        dibujarDiagrama(tipoObra, sistema);
+      }
+
+      function dibujarDiagrama(tipoObra, sistema) {
+        const box = document.getElementById("diagrama-box");
+        const svg = document.getElementById("svg-diagrama");
+        box.style.display = "block";
+
+        let largoTxt, anchoTxt, unidadLabel;
+
+        if (tipoObra === "columnas") {
+          const cant = document.getElementById("cant-columnas").value || "-";
+          const a = document.getElementById("col-seccion-a").value || "-";
+          const b = document.getElementById("col-seccion-b").value || "-";
+          const unidad = sistema === "imperial" ? '"' : "cm";
+          svg.innerHTML = `
+            <rect x="90" y="30" width="60" height="120" fill="var(--azul-claro)" stroke="var(--naranja-ferretero)" stroke-width="3"/>
+            <text x="150" y="20" text-anchor="middle" font-size="13" fill="var(--azul-marino)">Sección ${a}${unidad} x ${b}${unidad}</text>
+            <text x="150" y="165" text-anchor="middle" font-size="13" fill="var(--azul-marino)">${cant} elemento(s)</text>
+          `;
+        } else {
+          const largo = document.getElementById("largo").value || "-";
+          const ancho = document.getElementById("ancho").value || "-";
+          const unidad = sistema === "imperial" ? "ft" : "m";
+          svg.innerHTML = `
+            <rect x="40" y="40" width="220" height="100" fill="var(--azul-claro)" stroke="var(--naranja-ferretero)" stroke-width="3"/>
+            <text x="150" y="30" text-anchor="middle" font-size="13" fill="var(--azul-marino)">Largo: ${largo} ${unidad}</text>
+            <text x="20" y="95" text-anchor="middle" font-size="13" fill="var(--azul-marino)" transform="rotate(-90 20 95)">Ancho: ${ancho} ${unidad}</text>
+          `;
+        }
       }
     </script>
   </body>

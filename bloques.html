@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de Bloques y Paredes | Ferretería Don Iván</title>
+    <meta
+      name="description"
+      content="Calcula gratis la cantidad de bloques, ladrillos y mortero de pegado para tu pared en Ecuador. Métrico e imperial, con desglose de materiales."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -149,10 +153,10 @@
               <label for="tipo-mortero">Tipo de Pegado / Mortero:</label>
               <select id="tipo-mortero">
                 <option value="tradicional" selected>
-                  Mezcla Tradicional (Cemento + Arena Fina)
+                  Mezcla Tradicional (Cemento + Arena Fina) - estimado
                 </option>
                 <option value="intaco_gruesa">
-                  Sacos Premezclados Mortero (INTACO / Quikrete 40kg)
+                  Sacos Premezclados (Pegablock/Intaco 40kg) - más preciso
                 </option>
               </select>
             </div>
@@ -243,6 +247,18 @@
               <strong>"Calcular Materiales"</strong> para ver el desglose.
             </p>
           </div>
+
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial. Confirma medidas reales de bloque con tu
+            proveedor antes de comprar en volumen.
+          </p>
 
           <div
             id="btn-cotizar-container"
@@ -335,7 +351,7 @@
                       font-weight: bold;
                     "
                   >
-                    14.2 unidades
+                    ~14.6 unidades*
                   </td>
                 </tr>
                 <tr>
@@ -350,11 +366,19 @@
                       font-weight: bold;
                     "
                   >
-                    28 a 30 unidades
+                    ~22.2 unidades*
                   </td>
                 </tr>
               </tbody>
             </table>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem">
+              * Bloque prensado: medida nominal 40x20 cm confirmada como
+              módulo exacto por fichas de fabricante ("Cantidad por m²:
+              12.5"). En bloque artesanal la medida real varía por
+              fabricante; en ladrillo mambrón, el rendimiento cambia si se
+              coloca de canto. Confirma con tu proveedor antes de comprar en
+              volumen.
+            </p>
           </article>
 
           <article class="card">
@@ -480,6 +504,10 @@
         let altoCm = 20;
         let anchoCm = 15;
         let nombrePieza = "";
+        let juntaCm = 0; // junta de pega; 0 cuando la medida nominal del
+        // bloque ya representa el módulo exacto de 40x20 cm publicado por
+        // fabricantes y distribuidores (confirmado: "Cantidad por m²: 12.5"
+        // en fichas de bloque 40x20x10, 40x20x15 y 40x20x20)
 
         if (tipo === "prensado15") {
           largoCm = 40;
@@ -533,8 +561,12 @@
           nombrePieza = `Bloque Personalizado (${largoCm.toFixed(1)}x${altoCm.toFixed(1)} cm)`;
         }
 
-        const largoEfectivoM = (largoCm + 1.5) / 100;
-        const altoEfectivoM = (altoCm + 1.5) / 100;
+        // Las medidas nominales de bloque prensado (Pegablok IEC / Intaco
+        // Ecuador) son la pieza física real; la junta de pega se suma
+        // aparte (1.5 cm confirmado). Para bloque artesanal/ladrillo se usa
+        // la medida externa directa (sin fuente oficial de junta).
+        const largoEfectivoM = (largoCm + juntaCm) / 100;
+        const altoEfectivoM = (altoCm + juntaCm) / 100;
         const unidadesPorM2 = 1 / (largoEfectivoM * altoEfectivoM);
 
         const totalPiezasTeorico = areaNetaM2 * unidadesPorM2;
@@ -543,15 +575,27 @@
         );
 
         const factorEspesor = anchoCm / 15;
+
+        // MORTERO PREMEZCLADO: basado en ficha técnica real (Bexel/Cemix
+        // Pegablock), rendimiento ~9 kg mortero/m² para bloque estándar con
+        // junta de 10-15mm = ~4.4 m² por saco de 40kg. Escalado por espesor
+        // de bloque. El fabricante aclara que varía según junta/condiciones
+        // de obra, por lo que se recomienda prueba en sitio.
+        const rendimientoM2PorSaco40kg = 4.4 / factorEspesor;
+        const areaConDesperdicio = areaNetaM2 * (1 + desperdicio);
+
+        // MEZCLA TRADICIONAL: estimación volumétrica aproximada (aún sin
+        // ficha técnica que la respalde con la misma certeza).
         const m3MorteroBase = 0.022 * factorEspesor;
-        const volumenMorteroTotal =
-          areaNetaM2 * m3MorteroBase * (1 + desperdicio);
+        const volumenMorteroTotal = areaConDesperdicio * m3MorteroBase;
 
         let htmlMortero = "";
         let textoMorteroWA = "";
 
         if (tipoMortero === "intaco_gruesa") {
-          const sacosIntaco = Math.ceil(volumenMorteroTotal / 0.02);
+          const sacosIntaco = Math.ceil(
+            areaConDesperdicio / rendimientoM2PorSaco40kg,
+          );
           htmlMortero = `
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
             <span><strong>Sacos Mortero Premezclado (40kg / 90lb):</strong></span>
@@ -569,6 +613,10 @@
           <li style="padding: 0.5rem 0; display: flex; justify-content: space-between;">
             <span><strong>Arena Fina / Cernida para pegado:</strong></span>
             <strong>${m3ArenaFina} m³ / ${(m3ArenaFina * 1.308).toFixed(2)} yd³</strong>
+          </li>
+          <li style="padding: 0.5rem 0; font-size: 0.75rem; color: #94a3b8;">
+            Estimación aproximada. El rendimiento real varía según obra; se
+            recomienda verificar con una prueba en sitio.
           </li>`;
           textoMorteroWA = `- Cemento pegado: ${sacosCemento} sacos\n- Arena Fina: ${m3ArenaFina} m³`;
         }

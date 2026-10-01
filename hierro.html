@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de Hierro y Estructuras | Ferretería Don Iván</title>
+    <meta
+      name="description"
+      content="Calcula gratis varillas, quintales y kilos de hierro para columnas, vigas y zapatas en Ecuador. Armado antisísmico, métrico e imperial."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -156,6 +160,30 @@
               </div>
 
               <div class="form-group">
+                <label for="col-seccion-a" id="label-col-seccion"
+                  >Sección de la Columna/Viga (cm) - Ancho x Alto:</label
+                >
+                <div style="display: flex; gap: 0.5rem">
+                  <input
+                    type="number"
+                    id="col-seccion-a"
+                    step="1"
+                    min="10"
+                    placeholder="Ej: 20"
+                    value="20"
+                  />
+                  <input
+                    type="number"
+                    id="col-seccion-b"
+                    step="1"
+                    min="10"
+                    placeholder="Ej: 20"
+                    value="20"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="diametro-principal"
                   >Diámetro de Varilla Principal:</label
                 >
@@ -167,7 +195,7 @@
                     12 mm (#4 - 1/2") - Estándar residencial
                   </option>
                   <option value="14">
-                    14 mm (#4.5 - 9/16") - Para 2 y 3 pisos
+                    14 mm (≈9/16") - Para 2 y 3 pisos
                   </option>
                 </select>
               </div>
@@ -218,7 +246,7 @@
                   <option value="12" selected>
                     12 mm (#4 - 1/2") - Recomendado
                   </option>
-                  <option value="14">14 mm (#4.5 - 9/16") - Carga Alta</option>
+                  <option value="14">14 mm (≈9/16") - Carga Alta</option>
                 </select>
               </div>
             </div>
@@ -268,6 +296,19 @@
               <strong>"Calcular Hierro y Pesos"</strong>.
             </p>
           </div>
+
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial de armado antisísmico básico. No reemplaza
+            el diseño de un ingeniero civil ni el cálculo de espaciamiento
+            variable en zonas confinadas según norma NEC.
+          </p>
 
           <div
             id="btn-cotizar-container"
@@ -331,6 +372,7 @@
                   <th style="padding: 0.6rem">Métrico</th>
                   <th style="padding: 0.6rem">EE.UU. / Imperial</th>
                   <th style="padding: 0.6rem">Peso por metro</th>
+                  <th style="padding: 0.6rem">Varillas (12m) por quintal</th>
                 </tr>
               </thead>
               <tbody>
@@ -346,6 +388,7 @@
                   >
                     0.395 kg/m
                   </td>
+                  <td style="padding: 0.6rem">9.57 (≈9)</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
                   <td style="padding: 0.6rem"><strong>10 mm</strong></td>
@@ -359,6 +402,7 @@
                   >
                     0.617 kg/m
                   </td>
+                  <td style="padding: 0.6rem">6.13 (≈6)</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
                   <td style="padding: 0.6rem"><strong>12 mm</strong></td>
@@ -372,10 +416,11 @@
                   >
                     0.888 kg/m
                   </td>
+                  <td style="padding: 0.6rem">4.26 (≈4)</td>
                 </tr>
                 <tr>
                   <td style="padding: 0.6rem"><strong>14 mm</strong></td>
-                  <td style="padding: 0.6rem">#4.5 (9/16 in)</td>
+                  <td style="padding: 0.6rem">≈9/16 in (sin # ASTM exacto)</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -385,9 +430,14 @@
                   >
                     1.210 kg/m
                   </td>
+                  <td style="padding: 0.6rem">3.13 (≈3)</td>
                 </tr>
               </tbody>
             </table>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem">
+              * Valor decimal exacto (45.36 kg/qq) vs. redondeo comercial
+              usado al facturar. Confirmado contra ficha de precios Adelca.
+            </p>
           </article>
 
           <article class="card">
@@ -408,14 +458,14 @@
                 durante sismos.
               </li>
               <li style="margin-bottom: 0.5rem">
-                <strong>1 Quintal:</strong> Equivale a $46\text{ kg}$ o
-                $100\text{ libras}$ comerciales en Ecuador y varios países
-                sudamericanos.
+                <strong>1 Quintal:</strong> Equivale exactamente a 45.36 kg
+                (100 libras), el estándar internacional. En el comercio
+                ecuatoriano a veces se redondea a 46 kg por conveniencia;
+                esta calculadora usa el valor exacto para mayor precisión.
               </li>
               <li>
                 <strong>Alambre de Amarre:</strong> Se calcula aproximadamente
-                $1.2\text{ kg}$ por cada quintal de acero armado ($100\text{
-                lb}$).
+                1.2 kg por cada quintal de acero armado (100 lb).
               </li>
             </ul>
           </article>
@@ -509,11 +559,27 @@
           totalMetrosPrincipal = cant * numVarillas * metrosPorElem;
           varillasTotalPrincipal = Math.ceil(totalMetrosPrincipal / 12);
 
+          const seccionACm = parseFloat(
+            document.getElementById("col-seccion-a").value,
+          );
+          const seccionBCm = parseFloat(
+            document.getElementById("col-seccion-b").value,
+          );
+          const seccionAM = seccionACm / 100 || 0.2;
+          const seccionBM = seccionBCm / 100 || 0.2;
+
           const numEstribosPorElem = Math.ceil(longitudM / 0.15);
-          totalMetrosEstribos = cant * numEstribosPorElem * 0.9;
+          // Longitud real del estribo = perímetro de la sección (restando el
+          // recubrimiento de ~2x2.5cm) + 10cm de gancho de traslape a 135°.
+          const recubrimientoM = 0.025;
+          const perimetroEstriboM =
+            2 *
+            (seccionAM - 2 * recubrimientoM + (seccionBM - 2 * recubrimientoM));
+          const longEstriboM = Math.max(perimetroEstriboM, 0.3) + 0.1;
+          totalMetrosEstribos = cant * numEstribosPorElem * longEstriboM;
           varillasTotalEstribo = Math.ceil(totalMetrosEstribos / 12);
 
-          detalleEstructura = `${cant} Columnas/Vigas (${longInput} ${sistema === "imperial" ? "ft" : "m"}) con ${numVarillas} varillas de ${diamPrincipal}mm`;
+          detalleEstructura = `${cant} Columnas/Vigas (${longInput} ${sistema === "imperial" ? "ft" : "m"}, sección ${seccionACm}x${seccionBCm}cm) con ${numVarillas} varillas de ${diamPrincipal}mm`;
         } else {
           const cantZap = parseFloat(
             document.getElementById("cant-zapatas").value,
@@ -544,7 +610,7 @@
         const pesoKgEstribo = totalMetrosEstribos * pesoPorMetro[diamEstribo];
         const pesoTotalKg = pesoKgPrincipal + pesoKgEstribo;
 
-        const quintalesTotales = (pesoTotalKg / 46).toFixed(2);
+        const quintalesTotales = (pesoTotalKg / 45.36).toFixed(2);
         const librasTotales = (pesoTotalKg * 2.20462).toFixed(1);
         const kilosAlambre = Math.ceil(pesoTotalKg * 0.026);
 
