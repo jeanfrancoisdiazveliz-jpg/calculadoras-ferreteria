@@ -6,6 +6,10 @@
     <title>
       Calculadora de Pinturas e Impermeabilizantes | Ferretería Don Iván
     </title>
+    <meta
+      name="description"
+      content="Calcula gratis cuántos galones o canecas de pintura, esmalte o impermeabilizante necesitas en Ecuador. Métrico e imperial, con margen de seguridad ajustable."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -86,7 +90,7 @@
 
             <div class="form-group">
               <label for="tipo-pintura">Tipo de Recubrimiento / Pintura:</label>
-              <select id="tipo-pintura">
+              <select id="tipo-pintura" onchange="sugerirManos()">
                 <option value="latex_int">
                   Látex Interior (Paredes / Tumbados)
                 </option>
@@ -129,6 +133,23 @@
                 </option>
                 <option value="metal_madera">
                   Metal Limpio / Madera Tratada
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="margen-desperdicio"
+                >Margen de Seguridad (varía mucho por marca):</label
+              >
+              <select id="margen-desperdicio">
+                <option value="0">
+                  0% (rendimiento de etiqueta, marca de alto rendimiento)
+                </option>
+                <option value="0.15" selected>
+                  15% (recomendado, promedio del mercado)
+                </option>
+                <option value="0.4">
+                  40% (conservador, marcas con rendimiento teórico más bajo)
                 </option>
               </select>
             </div>
@@ -199,6 +220,19 @@
               por galones, canecas y litros.
             </p>
           </div>
+
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial. El rendimiento real varía mucho según
+            marca y color; verifica siempre la ficha técnica del producto
+            elegido.
+          </p>
 
           <div
             id="btn-cotizar-container"
@@ -283,7 +317,7 @@
 
           <article class="card">
             <h3 style="color: var(--azul-marino); margin-bottom: 0.8rem">
-              2. Tabla de Rendimientos por Presentación (a 2 Manos)
+              2. Tabla de Rendimientos por Presentación
             </h3>
             <table
               style="
@@ -296,7 +330,7 @@
               <thead>
                 <tr style="background-color: var(--azul-marino); color: white">
                   <th style="padding: 0.6rem">Tipo de Pintura</th>
-                  <th style="padding: 0.6rem">Litro / Cuertero</th>
+                  <th style="padding: 0.6rem">Litro</th>
                   <th style="padding: 0.6rem">Galón (3.78L)</th>
                   <th style="padding: 0.6rem">Caneca (5 Gal)</th>
                 </tr>
@@ -304,7 +338,7 @@
               <tbody>
                 <tr style="border-bottom: 1px solid #e2e8f0">
                   <td style="padding: 0.6rem">
-                    <strong>Látex Pared Empastada</strong>
+                    <strong>Látex Pared Empastada (2 manos)</strong>
                   </td>
                   <td style="padding: 0.6rem">6 - 7.5 m²</td>
                   <td
@@ -322,7 +356,7 @@
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0">
                   <td style="padding: 0.6rem">
-                    <strong>Esmalte sobre Metal</strong>
+                    <strong>Esmalte sobre Metal (2 manos)</strong>
                   </td>
                   <td style="padding: 0.6rem">5 - 6 m²</td>
                   <td
@@ -340,9 +374,9 @@
                 </tr>
                 <tr>
                   <td style="padding: 0.6rem">
-                    <strong>Impermeabilizante Techos</strong>
+                    <strong>Impermeabilizante Techos (3 manos)</strong>
                   </td>
-                  <td style="padding: 0.6rem">2 - 2.5 m²</td>
+                  <td style="padding: 0.6rem">1.4 - 1.7 m²</td>
                   <td
                     style="
                       padding: 0.6rem;
@@ -350,12 +384,19 @@
                       font-weight: bold;
                     "
                   >
-                    8 - 10 m²
+                    5.5 - 6.5 m²
                   </td>
-                  <td style="padding: 0.6rem; font-weight: bold">40 - 50 m²</td>
+                  <td style="padding: 0.6rem; font-weight: bold">27 - 32 m²</td>
                 </tr>
               </tbody>
             </table>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem">
+              * Rendimientos de etiqueta (0% margen). El impermeabilizante
+              usa 3 manos porque la primera va diluida al 20% (penetra, no
+              cubre) — por eso rinde menos por galón que a 2 manos. Con
+              margen de seguridad aplicado, la calculadora da un resultado
+              algo menor a estos valores.
+            </p>
           </article>
         </div>
       </section>
@@ -378,11 +419,22 @@
         }
       }
 
+      function sugerirManos() {
+        const tipo = document.getElementById("tipo-pintura").value;
+        const manosSelect = document.getElementById("num-manos");
+        // La guía técnica recomienda 3 manos para impermeabilizante
+        // (1ra diluida + 2 puras); el resto usa 2 manos como estándar.
+        manosSelect.value = tipo === "impermeabilizante" ? "3" : "2";
+      }
+
       function calcularPintura() {
         const sistema = document.getElementById("sistema-unidades").value;
         const tipoPintura = document.getElementById("tipo-pintura").value;
         const metodo = document.getElementById("metodo-aplicacion").value;
         const estado = document.getElementById("estado-superficie").value;
+        const margenDesperdicio = parseFloat(
+          document.getElementById("margen-desperdicio").value,
+        );
         const manos = parseInt(document.getElementById("num-manos").value);
         const areaInput = parseFloat(
           document.getElementById("area-pintar").value,
@@ -434,11 +486,15 @@
           rendimientoGalon1Mano *= 1.1; // Rinde 10% más por pulverización
         }
 
-        // Rendimiento efectivo por galón considerando el número de manos
+        // Rendimiento efectivo por galón considerando el número de manos y
+        // el margen de seguridad (el rendimiento "de etiqueta" varía mucho
+        // entre marcas: Pintuco publica ~50 m²/gal, mientras que la ficha
+        // técnica teórica de Cóndor PIN3 indica ~26.5 m²/gal).
+        rendimientoGalon1Mano = rendimientoGalon1Mano / (1 + margenDesperdicio);
         const rendimientoEfectivoGalon = rendimientoGalon1Mano / manos;
         const galonesNecesarios = areaM2 / rendimientoEfectivoGalon;
 
-        // Desglose de envases comerciales (Canecas de 5 gal, Galones y Litros/Cuerteros)
+        // Desglose de envases comerciales (Canecas de 5 gal, Galones y Litros)
         const canecas = Math.floor(galonesNecesarios / 5);
         const galonesRestantes = galonesNecesarios % 5;
         let galonesCompletos = Math.floor(galonesRestantes);
@@ -451,6 +507,12 @@
           litrosRestantes = 0;
         }
 
+        // Si el redondeo deja 5+ galones sueltos, agruparlos en caneca(s)
+        if (galonesCompletos >= 5) {
+          canecas += Math.floor(galonesCompletos / 5);
+          galonesCompletos = galonesCompletos % 5;
+        }
+
         let resumenEnvases = [];
         if (canecas > 0)
           resumenEnvases.push(`<strong>${canecas} Caneca(s)</strong> (5 Gal)`);
@@ -458,7 +520,7 @@
           resumenEnvases.push(`<strong>${galonesCompletos} Galón(es)</strong>`);
         if (litrosRestantes > 0)
           resumenEnvases.push(
-            `<strong>${litrosRestantes} Litro(s) / Cuertero(s)</strong>`,
+            `<strong>${litrosRestantes} Litro(s)</strong>`,
           );
 
         if (resumenEnvases.length === 0)

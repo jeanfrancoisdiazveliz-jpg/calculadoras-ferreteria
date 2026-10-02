@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de Cerámica y Porcelanato | Ferretería Don Iván</title>
+    <meta
+      name="description"
+      content="Calcula gratis cuántas cajas de cerámica o porcelanato, sacos de Bondex y fragua necesitas en Ecuador, según el formato y la caja de tu marca."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -259,6 +263,18 @@
             </p>
           </div>
 
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial. El rendimiento por caja varía según marca
+            y modelo: confirma siempre el dato impreso en el empaque.
+          </p>
+
           <div
             id="btn-cotizar-container"
             style="display: none; margin-top: 1.5rem"
@@ -329,13 +345,13 @@
               <li style="margin-bottom: 0.5rem">
                 <strong>Bondex Premium / Porcelanato:</strong> Con aditivo
                 polimérico de alta flexibilidad. Requerido para Porcelanatos,
-                grandes formatos ($60 \times 60\text{ cm}$ en adelante) y
-                colocación Piso sobre Piso.
+                grandes formatos (60x60 cm en adelante) y colocación Piso
+                sobre Piso.
               </li>
               <li>
                 <strong>Fragua / Porcelanizador:</strong> Se calcula
-                aproximadamente $1\text{ kg}$ de fragua por cada $8\text{ m}^2$
-                a $10\text{ m}^2$ para juntas de $2\text{ mm}$ a $3\text{ mm}$.
+                aproximadamente 1 kg de fragua por cada 8 a 10 m² para
+                juntas de 2 a 3 mm.
               </li>
             </ul>
           </article>
@@ -555,8 +571,10 @@
           areaTotalConDesperdicioM2 / areaUnaPiezaM2,
         );
 
-        // Rendimiento de pegamento por saco (25kg)
-        let m2PorSacoPegamento = 4.5;
+        // Rendimiento de pegamento por saco (25kg), según los 3 rangos de
+        // la guía técnica: mosaico/pared pequeña, piso estándar, y
+        // porcelanato/formato grande con doble encolado.
+        let m2PorSacoPegamento = 4.75; // Piso estándar (30x30 a 45x45): 4.5-5.0
         let nombrePego = "Bondex Estándar Gris/Blanco (25 kg)";
 
         if (tipoPegamento === "bondex_plus") {
@@ -566,7 +584,9 @@
         }
 
         if (anchoCm >= 60 || largoCm >= 60 || material === "porcelanato") {
-          m2PorSacoPegamento = 3.5; // Doble encolado / llana dentada grande
+          m2PorSacoPegamento = 3.25; // Porcelanato/grande, doble encolado: 3.0-3.5
+        } else if (anchoCm < 30 && largoCm < 30) {
+          m2PorSacoPegamento = 5.75; // Mosaico/pared pequeña: 5.5-6.0
         }
 
         const sacosPegamento = Math.ceil(
