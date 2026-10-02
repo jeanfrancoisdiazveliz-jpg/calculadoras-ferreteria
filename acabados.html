@@ -6,6 +6,10 @@
     <title>
       Calculadora de Acabados de Lujo y Tejas PVC | Ferretería Don Iván
     </title>
+    <meta
+      name="description"
+      content="Calcula gratis tejas españolas de PVC, correas G, pernos y canales pluviales, o paneles WPC y PVC marmolizado, con simulación visual del techo."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -255,6 +259,19 @@
             </p>
           </div>
 
+          <p
+            style="
+              font-size: 0.78rem;
+              color: #94a3b8;
+              margin-top: 1rem;
+              text-align: center;
+            "
+          >
+            * Cálculo referencial. La separación de correas y cantidad de
+            pernos puede variar según el fabricante y la carga de viento de
+            tu zona; consulta siempre la ficha técnica del producto elegido.
+          </p>
+
           <!-- CONTENEDOR DEL SIMULADOR TÉCNICO VISUAL -->
           <div
             id="simulador-container"
@@ -351,18 +368,18 @@
             >
               <li style="margin-bottom: 0.5rem">
                 <strong>Separación Máxima de Correas:</strong> Para Teja
-                Española de $2.5\text{ mm}$, las correas tipo G deben soldarse o
-                fijarse a máximo <strong>65 cm a 75 cm</strong> de distancia.
+                Española de 2.5 mm, las correas tipo G se fijan entre
+                <strong>60 cm y 90 cm</strong> de distancia según el
+                fabricante. Esta calculadora usa 70 cm como estándar.
               </li>
               <li style="margin-bottom: 0.5rem">
                 <strong>Pernos y Capuchones:</strong> Fijar sobre la cresta de
-                la teja con pernos de $2"$ o $2.5"$ autoperforantes con arandela
+                la teja con pernos de 2" o 2.5" autoperforantes con arandela
                 de goma EPDM.
               </li>
               <li>
                 <strong>Canales de Lluvia:</strong> Colocar ganchos de soporte
-                para canales cada $60\text{ cm}$ a $80\text{ cm}$ a lo largo de
-                la caída.
+                para canales cada 60 cm a 80 cm a lo largo de la caída.
               </li>
             </ul>
           </article>
@@ -381,7 +398,7 @@
             >
               <li style="margin-bottom: 0.5rem">
                 <strong>Paneles WPC Acanalados:</strong> Usar binchas invisibles
-                de acero inoxidable (4 binchas por tira de $2.90\text{ m}$).
+                de acero inoxidable (4 binchas por tira de 2.90 m).
               </li>
               <li style="margin-bottom: 0.5rem">
                 <strong>PVC Marmolizado (1.22 x 2.44 m):</strong> Aplicar
@@ -399,7 +416,7 @@
     </main>
 
     <footer>
-      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados.</p>
+      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados. | <a href="privacidad.html" style="color: #cbd5e1">Política de Privacidad</a></p>
     </footer>
 
     <!-- LÓGICA JAVASCRIPT Y DIBUJO DEL SIMULADOR -->
@@ -802,5 +819,6 @@
           "block";
       }
     </script>
+  <script src="script.js"></script>
   </body>
 </html>
