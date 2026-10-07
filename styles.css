@@ -438,3 +438,16 @@ footer {
     width: 100%;
   }
 }
+
+/* Evita que tablas u otro contenido ensanchen la página en móvil */
+.grid-2 > * {
+  min-width: 0;
+}
+.card {
+  min-width: 0;
+}
+.card table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
