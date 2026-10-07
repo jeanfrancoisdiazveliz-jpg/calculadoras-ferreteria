@@ -10,3 +10,5 @@ Thumbs.db
 
 # Carpetas de dependencias (por si luego usas Node/npm)
 node_modules/
+
+*.exe
