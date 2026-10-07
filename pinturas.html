@@ -560,7 +560,7 @@
         </ul>
       `;
 
-        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar pintura:\n\n- Tipo: ${nombrePintura}\n- Área: ${areaM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Manos: ${manos}\n- Total Galones: ${galonesNecesarios.toFixed(2)} gal\n- Envases recomendados: ${resumenEnvases.join(" + ")}`;
+        const mensajeWA = `Hola Ferretería Don Iván, deseo cotizar pintura:\n\n- Tipo: ${nombrePintura}\n- Área: ${areaM2.toFixed(2)} m² (${areaSqFt} sq ft)\n- Manos: ${manos}\n- Total Galones: ${galonesNecesarios.toFixed(2)} gal\n- Envases recomendados: ${resumenEnvases.join(" + ").replace(/<\/?strong>/g, "")}`;
         const urlWA = `https://wa.me/593962888606?text=${encodeURIComponent(mensajeWA)}`;
 
         document.getElementById("whatsapp-link").href = urlWA;
