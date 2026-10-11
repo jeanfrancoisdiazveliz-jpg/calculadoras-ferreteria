@@ -19,6 +19,47 @@
     />
     <link rel="apple-touch-icon" href="IMAGENES/apple-touch-icon.png" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .brands-strip { max-width: 100%; overflow: hidden; margin-bottom: 1.2rem; }
+      .ship-bar {
+        display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+        background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px;
+        padding: 0.8rem 1rem; color: #1e293b;
+      }
+      .ship-icon { color: var(--naranja-ferretero, #f97316); flex: 0 0 auto; }
+      .ship-bar p { margin: 0; flex: 1 1 220px; line-height: 1.45; }
+      .ship-link { color: var(--naranja-ferretero, #f97316); font-weight: 700; text-decoration: none; white-space: nowrap; }
+      .brands-title {
+        text-align: center; margin: 1.1rem 0 0.7rem; font-size: 0.85rem; font-weight: 700;
+        letter-spacing: 0.04em; text-transform: uppercase; color: #64748b;
+      }
+      .brands-viewport {
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      }
+      .brands-track {
+        display: flex; width: max-content; list-style: none; margin: 0; padding: 0;
+        animation: brands-scroll 28s linear infinite;
+      }
+      .brands-track li { flex: 0 0 auto; margin-right: 1rem; }
+      .brands-track img {
+        display: block; width: 88px; height: 88px; border-radius: 14px;
+        border: 1px solid #e2e8f0; object-fit: cover; background: #fff;
+      }
+      .brands-track img.logo-svg { object-fit: contain; padding: 14px; }
+      .brands-viewport:hover .brands-track { animation-play-state: paused; }
+      @keyframes brands-scroll { to { transform: translateX(-50%); } }
+      @media (max-width: 600px) {
+        .brands-track img { width: 72px; height: 72px; border-radius: 12px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .brands-viewport { -webkit-mask-image: none; mask-image: none; }
+        .brands-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; gap: 0.8rem; }
+        .brands-track li { margin-right: 0; }
+        .brands-track li[aria-hidden="true"] { display: none; }
+      }
+    </style>
   </head>
   <body>
     <!-- ENCABEZADO -->
@@ -71,6 +112,39 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="container">
+      <!-- ENVÍOS Y MARCAS -->
+      <section class="brands-strip" aria-label="Envíos y marcas">
+        <div class="ship-bar">
+          <svg class="ship-icon" viewBox="0 0 64 40" width="56" height="35" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h30v24H4zM34 14h13l8 9v7H34z"/><circle cx="16" cy="32" r="4.5" fill="#fff"/><circle cx="46" cy="32" r="4.5" fill="#fff"/><path d="M10 12h-6M8 18H2" stroke-width="2"/></svg>
+          <p>
+            <strong>Envío gratis en Quito y valles.</strong>
+            Para otras ciudades coordinamos el envío al cotizar por WhatsApp.
+          </p>
+          <a href="herramientas.html" class="ship-link">Ver herramientas</a>
+        </div>
+        <p class="brands-title">Marcas que encuentras en nuestro local</p>
+        <div class="brands-viewport">
+          <ul class="brands-track">
+            <li><img src="IMAGENES/MARCA_INGCO.jpg" alt="Logo INGCO" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_ADELCA.jpg" alt="Logo Adelca" width="88" height="88" loading="lazy" /></li>
+            <li><img class="logo-svg" src="IMAGENES/MARCA_SELVALEGRE.svg" alt="Logo Selva Alegre" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_RIVAL.jpg" alt="Logo Rival" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_PLASTIGAMA.jpg" alt="Logo Plastigama y Wavin" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_FV.jpg" alt="Logo FV" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_PINTULAC.jpg" alt="Logo Pintulac" width="88" height="88" loading="lazy" /></li>
+            <li><img src="IMAGENES/MARCA_YETKA.jpg" alt="Logo Yetka" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_INGCO.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_ADELCA.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img class="logo-svg" src="IMAGENES/MARCA_SELVALEGRE.svg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_RIVAL.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_PLASTIGAMA.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_FV.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_PINTULAC.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+            <li aria-hidden="true"><img src="IMAGENES/MARCA_YETKA.jpg" alt="" width="88" height="88" loading="lazy" /></li>
+          </ul>
+        </div>
+      </section>
+
       <!-- SECCIÓN DE CALCULADORAS (TODAS LAS OPCIONES INTEGRADAS) -->
       <section class="card">
         <h2>Calculadoras Técnicas de Construcción</h2>
@@ -204,8 +278,8 @@
       <section class="card">
         <h2>Materiales y Productos Estrella</h2>
         <p style="margin-bottom: 1.2rem">
-          Mantenemos stock permanente de las marcas líderes en el sector
-          ferretero y de construcción:
+          Trabajamos con las marcas líderes del sector ferretero y de
+          construcción:
         </p>
 
         <div class="grid-4">
