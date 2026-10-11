@@ -11,7 +11,12 @@
       content="Calcula gratis cuántos galones o canecas de pintura, esmalte o impermeabilizante necesitas en Ecuador. Métrico e imperial, con margen de seguridad ajustable."
     />
     <link rel="icon" type="image/x-icon" href="IMAGENES/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="IMAGENES/favicon-32.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="IMAGENES/favicon-32.png"
+    />
     <link rel="apple-touch-icon" href="IMAGENES/apple-touch-icon.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -42,6 +47,7 @@
           <a href="pinturas.html" class="active">Pinturas</a>
           <a href="ceramica.html">Cerámica</a>
           <a href="acabados.html">Acabados</a>
+          <a href="herramientas.html">Herramientas</a>
           <a href="contacto.html">Contacto</a>
         </nav>
       </div>
@@ -232,9 +238,8 @@
               text-align: center;
             "
           >
-            * Cálculo referencial. El rendimiento real varía mucho según
-            marca y color; verifica siempre la ficha técnica del producto
-            elegido.
+            * Cálculo referencial. El rendimiento real varía mucho según marca y
+            color; verifica siempre la ficha técnica del producto elegido.
           </p>
 
           <div
@@ -394,11 +399,11 @@
               </tbody>
             </table>
             <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem">
-              * Rendimientos de etiqueta (0% margen). El impermeabilizante
-              usa 3 manos porque la primera va diluida al 20% (penetra, no
-              cubre) — por eso rinde menos por galón que a 2 manos. Con
-              margen de seguridad aplicado, la calculadora da un resultado
-              algo menor a estos valores.
+              * Rendimientos de etiqueta (0% margen). El impermeabilizante usa 3
+              manos porque la primera va diluida al 20% (penetra, no cubre) —
+              por eso rinde menos por galón que a 2 manos. Con margen de
+              seguridad aplicado, la calculadora da un resultado algo menor a
+              estos valores.
             </p>
           </article>
         </div>
@@ -406,7 +411,12 @@
     </main>
 
     <footer>
-      <p>&copy; 2026 Ferretería Don Iván. Todos los derechos reservados. | <a href="privacidad.html" style="color: #cbd5e1">Política de Privacidad</a></p>
+      <p>
+        &copy; 2026 Ferretería Don Iván. Todos los derechos reservados. |
+        <a href="privacidad.html" style="color: #cbd5e1"
+          >Política de Privacidad</a
+        >
+      </p>
     </footer>
 
     <!-- LÓGICA JAVASCRIPT DE CÁLCULO -->
@@ -522,9 +532,7 @@
         if (galonesCompletos > 0)
           resumenEnvases.push(`<strong>${galonesCompletos} Galón(es)</strong>`);
         if (litrosRestantes > 0)
-          resumenEnvases.push(
-            `<strong>${litrosRestantes} Litro(s)</strong>`,
-          );
+          resumenEnvases.push(`<strong>${litrosRestantes} Litro(s)</strong>`);
 
         if (resumenEnvases.length === 0)
           resumenEnvases.push("<strong>1 Galón</strong>");
@@ -568,6 +576,6 @@
           "block";
       }
     </script>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
